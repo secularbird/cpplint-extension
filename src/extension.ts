@@ -63,7 +63,10 @@ export function deactivate() {
 }
 
 function doLint() {
-    Lint(diagnosticCollection, config);
+    let language = vscode.window.activeTextEditor.document.languageId
+    if(language == "c" || language == "cpp") {
+        Lint(diagnosticCollection, config);
+    }
 }
 
 function findCpplintPath(settings: vscode.WorkspaceConfiguration) {
