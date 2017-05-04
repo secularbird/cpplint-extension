@@ -2,7 +2,7 @@
     "name": "cpplint",
     "displayName": "cpplint",
     "description": "code style check tool extension for cpplint",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "mine",
     "engines": {
         "vscode": "^1.11.0"
@@ -16,12 +16,14 @@
     ],
     "main": "./out/src/extension",
     "contributes": {
-        "commands": [{
-            "command": "cpplint.runAnalysis",
-            "title": "Analyze current file",
-            "category": "cpplinter"
-        }],
-         "configuration": {
+        "commands": [
+            {
+                "command": "cpplint.runAnalysis",
+                "title": "Analyze current file",
+                "category": "cpplinter"
+            }
+        ],
+        "configuration": {
             "type": "object",
             "title": "cpplint",
             "properties": {
@@ -49,5 +51,5 @@
     },
     "dependencies": {
         "lodash": "^4.17.4"
-  }
+    }
 }
