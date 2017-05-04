@@ -1,65 +1,52 @@
 # cpplint README
 
-This is the README for your extension "cpplint". After writing up a brief description, we recommend including the following sections.
+This extension utilizes the cpplint checker to provide C and C++ code style checker within Visual Studio Code.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
+* check coding style of cpp and c, when open and save source file
 
 \!\[feature X\]\(images/feature-x.png\)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### Install cpplint
+
+#### install from source
+https://github.com/google/styleguide/tree/gh-pages/cpplint
+
+#### Mac & linux:
+```bash
+sudo pip install cpplint
+```
+
+#### Check the install result
+##### linux:
+```text
+ls -l /usr/local/bin/cpplint
+-rwxr-xr-x 1 root root 381 May  3 08:19 /usr/local/bin/cpplint
+```
+##### Mac:
+```
+ls -l /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin/cpplint
+-rwxr-xr-x  1 root  wheel  468 Apr 30 22:57 /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin/cpplint
+```
+or
+```
+ls -l /opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/cpplint
+-rwxr-xr-x  1 root  wheel  267 Apr 30 22:03 /opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/cpplint
+```
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `cpplint.cpplintPath`: set cpplint executable path
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release

@@ -4,6 +4,10 @@
 import * as vscode from 'vscode';
 import * as an from './runner';
 import { Lint } from './lint';
+import { platform } from 'os';
+import { join } from 'path';
+import { each, isNull } from 'lodash';
+import { existsSync } from 'fs';
 
 let disposables: Set<any>;
 let config: {[key:string]:any};
@@ -30,10 +34,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(disposable);
 
-    vscode.workspace.onDidSaveTextDocument((() => lintIfEnabled()).bind(this));
-    vscode.workspace.onDidOpenTextDocument((() => lintIfEnabled()).bind(this));
+    checkConfiguration()
+    vscode.workspace.onDidSaveTextDocument((() => doLint()).bind(this));
+    vscode.workspace.onDidOpenTextDocument((() => doLint()).bind(this));
 }
-
 
 function runAnalysis() : Promise<void> {
     var edit = vscode.window.activeTextEditor;
@@ -54,8 +58,46 @@ function runAnalysis() : Promise<void> {
 
 // this method is called when your extension is deactivated
 export function deactivate() {
+    vscode.window.showInformationMessage("Cpplint deactivated")
 }
 
-function lintIfEnabled() {
+function doLint() {
     Lint(diagnosticCollection, config);
+}
+
+function findCpplintPath(settings: vscode.WorkspaceConfiguration) {
+    let cpplintPath = settings.get('cpplintPath', null);
+
+    if (isNull(cpplintPath)) {
+        let p = platform();
+        if (p === 'win32') {
+            // TODO: add win32 and win64 cpplint path
+        }
+        else if (p === 'linux' || p === 'darwin') {
+            let attempts = [ '/usr/local/bin/cpplint' ];
+            for (let index = 0; index < attempts.length; index++) {
+                if (existsSync(attempts[index])) {
+                    cpplintPath = attempts[index];
+                    break;
+                }
+            }
+        }
+    }
+
+    return cpplintPath;
+}
+
+function checkConfiguration() {
+    config = {};
+    let settings = vscode.workspace.getConfiguration('cpplint');
+
+    if (settings) {
+        var cpplintPath = findCpplintPath(settings);
+
+        if (!existsSync(cpplintPath)) {
+            vscode.window.showErrorMessage('Cpplint: Could not find cpplint executable');
+        }
+
+        config['cpplintPath'] = cpplintPath;
+    }
 }

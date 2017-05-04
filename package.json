@@ -11,7 +11,6 @@
         "Linters"
     ],
     "activationEvents": [
-        "onCommand:cpplint.runAnalysis",
         "onLanguage:cpp"
     ],
     "main": "./out/src/extension",
@@ -20,7 +19,18 @@
             "command": "cpplint.runAnalysis",
             "title": "Analyze current file",
             "category": "cpplinter"
-        }]
+        }],
+         "configuration": {
+            "type": "object",
+            "title": "cpplint",
+            "properties": {
+                "cpplint.cpplintPath": {
+                    "type": "string",
+                    "default": "/usr/local/bin/cpplint",
+                    "description": "The path to the cpplint executable. If not set, the default location will be used."
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",
