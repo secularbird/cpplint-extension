@@ -35,7 +35,9 @@ export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: 
 
     // 1 = path, 2 = line, 3 = severity, 4 = message
     let regex = /^(.*)\(([0-9]+)\):\s*(\w+):(.*)\s+\[(.*)\]\s+\[([0-9]+)\]/gm;
-    let cpplintOutput = runOnFile(vscode.window.activeTextEditor.document.fileName, vscode.workspace.rootPath);
+    let filename = vscode.window.activeTextEditor.document.fileName
+    let rootpath = vscode.workspace.rootPath
+    let cpplintOutput = runOnFile(filename, rootpath, config);
     let regexArray: RegExpExecArray;
     let fileData: {[key:string]:RegExpExecArray[]} = {};
     while (regexArray = regex.exec(cpplintOutput)) {

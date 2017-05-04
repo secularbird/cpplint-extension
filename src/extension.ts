@@ -27,6 +27,8 @@ export function activate(context: vscode.ExtensionContext) {
     // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "cpplint" is now active!');
 
+    checkConfiguration()
+
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
@@ -34,7 +36,6 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(disposable);
 
-    checkConfiguration()
     vscode.workspace.onDidSaveTextDocument((() => doLint()).bind(this));
     vscode.workspace.onDidOpenTextDocument((() => doLint()).bind(this));
 }
@@ -46,7 +47,7 @@ function runAnalysis() : Promise<void> {
     }
     let filename = vscode.window.activeTextEditor.document.fileName;
     let workspace = vscode.workspace.rootPath;
-    let result = an.runOnFile(filename, workspace);
+    let result = an.runOnFile(filename, workspace, config);
 
     outputChannel.show();
     outputChannel.clear();

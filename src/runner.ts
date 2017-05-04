@@ -1,21 +1,14 @@
 import { spawnSync } from "child_process";
 import * as vscode from 'vscode';
 
-export function runOnFile(filename:string, workspace:string){
-    let result = runCppLint(filename, workspace);
+export function runOnFile(filename:string, workspace:string, config: {[key:string]: any}){
+    let result = runCppLint(filename, workspace, config);
     return result;
 }
 
-function getCpplintPath()
-{
-    let settings = vscode.workspace.getConfiguration('cpplint');
-    let cpplintPath = settings.get('cpplintPath', null);
-    return cpplintPath;
-}
-
-function runCppLint(filename:string, workspace:string) {
+function runCppLint(filename:string, workspace:string, config: {[key:string]: any}) {
     let start = 'CppLint started: ' + new Date().toString();
-    let cpplint = getCpplintPath();
+    let cpplint = config["cpplintPath"];
     let param: string[] = ['--output=vs7', filename]
     let result = spawnSync(cpplint, param, {'cwd': workspace})
     let stdout = '' + result.stdout;
