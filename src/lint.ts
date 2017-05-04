@@ -55,7 +55,6 @@ export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: 
             let diagnostics: vscode.Diagnostic[] = [];
             for (let index = 0; index < fileData[fileName].length; index++) {
                 let array = fileData[fileName][index];
-                console.log("line " + array[2])
                 let line = Number(array[2]);
                 let severity = array[3];
                 let message = array[4];
@@ -65,8 +64,6 @@ export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: 
                 }
 
                 let l = doc.lineAt(line);
-                console.log(l.text)
-                console.log(message)
                 let r = new vscode.Range(line, l.text.match(/(\S|\s)/).index, line, l.text.length);
                 let d = new vscode.Diagnostic(r, `(${severity}) ${message}`, cpplintSeverityToDiagnosticSeverity(severity));
                 d.source = 'cpplint';
