@@ -6,7 +6,7 @@ This extension utilizes the cpplint checker to provide C and C++ code style chec
 
 * check coding style of cpp and c, when open and save source file
 
-\!\[feature X\]\(images/feature-x.png\)
+![feature](feature.png)
 
 
 ## Requirements
@@ -43,3 +43,4 @@ ls -l /opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/cpplint
 * `cpplint.cpplintPath`: set cpplint executable path
 
 ## Known Issues
+Any issues please contact: [cpplint](https://github.com/secularbird/cpplint-extension/issues)
