@@ -12,7 +12,9 @@
     ],
     "activationEvents": [
         "onLanguage:cpp",
-        "onLanguage:c"
+        "onLanguage:c",
+        "onCommand:cpplint.runAnalysis",
+        "onCommand:cpplint.runWholeAnalysis"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -20,6 +22,11 @@
             {
                 "command": "cpplint.runAnalysis",
                 "title": "Analyze current file",
+                "category": "cpplinter"
+            },
+            {
+                "command": "cpplint.runWholeAnalysis",
+                "title": "Analyze current workspace",
                 "category": "cpplinter"
             }
         ],
@@ -31,6 +38,15 @@
                     "type": "string",
                     "default": "/usr/local/bin/cpplint",
                     "description": "The path to the cpplint executable. If not set, the default location will be used."
+                },
+                "cpplint.lintMode": {
+                    "type": "string",
+                    "default": "workspace",
+                    "enum": [
+                        "single",
+                        "workspace"
+                    ],
+                    "description": "single is fast but only provide information of current active file, workspace is slow, provide informations of the whole workspace"
                 }
             }
         }
