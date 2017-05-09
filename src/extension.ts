@@ -8,11 +8,13 @@ import { platform } from 'os';
 import { join } from 'path';
 import { each, isNull } from 'lodash';
 import { existsSync } from 'fs';
+import { analysisResult } from './lint'
 
 let disposables: Set<any>;
 let config: {[key:string]:any};
 let outputChannel: vscode.OutputChannel;
 let statusItem: vscode.StatusBarItem;
+let timer:NodeJS.Timer;
 
 let diagnosticCollection: vscode.DiagnosticCollection = vscode.languages.createDiagnosticCollection('cpplint');
 
@@ -20,24 +22,25 @@ let diagnosticCollection: vscode.DiagnosticCollection = vscode.languages.createD
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
     disposables = new Set();
+
     outputChannel = vscode.window.createOutputChannel('CppLint');
-    disposables.add(outputChannel);
     // outputChannel.appendLine('CppLint is running.');
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "cpplint" is now active!');
 
-    checkConfiguration()
+    readConfiguration()
 
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('cpplint.runAnalysis', runAnalysis);
 
-    context.subscriptions.push(disposable);
+    let single = vscode.commands.registerCommand('cpplint.runAnalysis', runAnalysis);
+    context.subscriptions.push(single);
 
-    vscode.workspace.onDidSaveTextDocument((() => doLint()).bind(this));
-    vscode.workspace.onDidOpenTextDocument((() => doLint()).bind(this));
+    // workspace mode does not regist event
+    let whole = vscode.commands.registerCommand('cpplint.runWholeAnalysis', runWholeAnalysis);
+    context.subscriptions.push(whole);
 }
 
 function runAnalysis() : Promise<void> {
@@ -57,16 +60,42 @@ function runAnalysis() : Promise<void> {
     return Promise.resolve()
 }
 
+function runWholeAnalysis() : Promise<void> {
+    var edit = vscode.window.activeTextEditor;
+    if (!edit) {
+        return;
+    }
+    let filename = vscode.window.activeTextEditor.document.fileName;
+    let workspace = vscode.workspace.rootPath;
+    let result = an.runOnWorkspace(filename, workspace, config);
+
+    outputChannel.show();
+    outputChannel.clear();
+    outputChannel.appendLine(result);
+    // vscode.window.showInformationMessage(edit.document.uri.fsPath)
+    return Promise.resolve()
+}
+
 // this method is called when your extension is deactivated
 export function deactivate() {
+    clearTimeout(timer)
     vscode.window.showInformationMessage("Cpplint deactivated")
 }
 
 function doLint() {
     let language = vscode.window.activeTextEditor.document.languageId
     if(language == "c" || language == "cpp") {
-        Lint(diagnosticCollection, config);
+        if (config['lintMode'] == 'workspace') {
+            Lint(diagnosticCollection, config, true);
+        } else {
+            Lint(diagnosticCollection, config, false);
+        }
     }
+    clearTimeout(timer)
+}
+
+function startLint() {
+    timer = global.setTimeout(doLint, 1.5*1000);
 }
 
 function findCpplintPath(settings: vscode.WorkspaceConfiguration) {
@@ -91,7 +120,7 @@ function findCpplintPath(settings: vscode.WorkspaceConfiguration) {
     return cpplintPath;
 }
 
-function checkConfiguration() {
+function readConfiguration() {
     config = {};
     let settings = vscode.workspace.getConfiguration('cpplint');
 
@@ -103,5 +132,18 @@ function checkConfiguration() {
         }
 
         config['cpplintPath'] = cpplintPath;
+
+        var lintmode = settings.get('lintMode', 'single');
+        config['lintMode'] = lintmode;
+
+        if(config['lintMode'] == 'single') {
+            vscode.workspace.onDidOpenTextDocument((() => doLint()).bind(this));
+            vscode.workspace.onDidSaveTextDocument((() => doLint()).bind(this));
+        } else {
+            // start timer to do workspace lint
+            startLint();
+            vscode.workspace.onDidSaveTextDocument((() => startLint()).bind(this));
+        }
+
     }
 }

@@ -8,6 +8,8 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { runOnFile } from './runner';
+import { runOnWorkspace } from './runner';
+
 
 function getCorrectFileName(p: string): string {
     if (!fs.existsSync(p)) {
@@ -30,17 +32,14 @@ function cpplintSeverityToDiagnosticSeverity(severity: string): vscode.Diagnosti
     }
 }
 
-export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: {[key:string]:any}) {
+export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection, result:string) {
     diagnosticCollection.clear();
 
     // 1 = path, 2 = line, 3 = severity, 4 = message
     let regex = /^(.*)\(([0-9]+)\):\s*(\w+):(.*)\s+\[(.*)\]\s+\[([0-9]+)\]/gm;
-    let filename = vscode.window.activeTextEditor.document.fileName
-    let rootpath = vscode.workspace.rootPath
-    let cpplintOutput = runOnFile(filename, rootpath, config);
     let regexArray: RegExpExecArray;
     let fileData: {[key:string]:RegExpExecArray[]} = {};
-    while (regexArray = regex.exec(cpplintOutput)) {
+    while (regexArray = regex.exec(result)) {
         if (regexArray[1] === undefined || regexArray[2] === undefined || regexArray[3] === undefined || regexArray[4] === undefined) {
             continue;
         }
@@ -66,7 +65,7 @@ export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: 
                 }
 
                 let l = doc.lineAt(line);
-                let r = new vscode.Range(line, l.text.match(/(\S|\s)/).index, line, l.text.length);
+                let r = new vscode.Range(line, 0, line, l.text.length);
                 let d = new vscode.Diagnostic(r, `(${severity}) ${message}`, cpplintSeverityToDiagnosticSeverity(severity));
                 d.source = 'cpplint';
                 diagnostics.push(d);
@@ -74,4 +73,16 @@ export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: 
             diagnosticCollection.set(doc.uri, diagnostics);
         });
     }
+}
+
+export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: {[key:string]:any}, enableworkspace:boolean) {
+    let filename = vscode.window.activeTextEditor.document.fileName
+    let rootpath = vscode.workspace.rootPath
+    let cpplintOutput;
+    if (enableworkspace) {
+        cpplintOutput = runOnWorkspace(filename, rootpath, config);
+    } else {
+        cpplintOutput = runOnFile(filename, rootpath, config);
+    }
+    analysisResult(diagnosticCollection, cpplintOutput)
 }
