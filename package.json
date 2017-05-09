@@ -2,7 +2,7 @@
     "name": "cpplint",
     "displayName": "cpplint",
     "description": "code style check tool extension for cpplint",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "mine",
     "engines": {
         "vscode": "^1.11.0"
@@ -41,12 +41,12 @@
                 },
                 "cpplint.lintMode": {
                     "type": "string",
-                    "default": "workspace",
+                    "default": "single",
                     "enum": [
                         "single",
                         "workspace"
                     ],
-                    "description": "single is fast but only provide information of current active file, workspace is slow, provide informations of the whole workspace"
+                    "description": "single is fast, only provides information of current active file, workspace is slow, provides informations of the whole workspace"
                 }
             }
         }

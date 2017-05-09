@@ -41,6 +41,7 @@ ls -l /opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/cpplint
 ## Extension Settings
 
 * `cpplint.cpplintPath`: set cpplint executable path
+* `cpplint.lintMode`: set cpplint mode, avialable value are single and workspace
 
 ## Known Issues
 Any issues please contact: [cpplint](https://github.com/secularbird/cpplint-extension/issues)
