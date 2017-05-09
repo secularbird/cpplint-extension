@@ -14,6 +14,7 @@ let disposables: Set<any>;
 let config: {[key:string]:any};
 let outputChannel: vscode.OutputChannel;
 let statusItem: vscode.StatusBarItem;
+let timer:NodeJS.Timer;
 
 let diagnosticCollection: vscode.DiagnosticCollection = vscode.languages.createDiagnosticCollection('cpplint');
 
@@ -36,8 +37,6 @@ export function activate(context: vscode.ExtensionContext) {
 
     let single = vscode.commands.registerCommand('cpplint.runAnalysis', runAnalysis);
     context.subscriptions.push(single);
-
-    vscode.workspace.onDidSaveTextDocument((() => doLint()).bind(this));
 
     // workspace mode does not regist event
     let whole = vscode.commands.registerCommand('cpplint.runWholeAnalysis', runWholeAnalysis);
@@ -79,6 +78,7 @@ function runWholeAnalysis() : Promise<void> {
 
 // this method is called when your extension is deactivated
 export function deactivate() {
+    clearTimeout(timer)
     vscode.window.showInformationMessage("Cpplint deactivated")
 }
 
@@ -91,6 +91,11 @@ function doLint() {
             Lint(diagnosticCollection, config, false);
         }
     }
+    clearTimeout(timer)
+}
+
+function startLint() {
+    timer = global.setTimeout(doLint, 1.5*1000);
 }
 
 function findCpplintPath(settings: vscode.WorkspaceConfiguration) {
@@ -133,9 +138,11 @@ function readConfiguration() {
 
         if(config['lintMode'] == 'single') {
             vscode.workspace.onDidOpenTextDocument((() => doLint()).bind(this));
+            vscode.workspace.onDidSaveTextDocument((() => doLint()).bind(this));
         } else {
             // start timer to do workspace lint
-            vscode.workspace.onDidOpenTextDocument((() => doLint()).bind(this));
+            startLint();
+            vscode.workspace.onDidSaveTextDocument((() => startLint()).bind(this));
         }
 
     }
