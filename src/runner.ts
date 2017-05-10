@@ -14,7 +14,8 @@ export function runOnWorkspace(filename:string, workspace:string, config: {[key:
 function runCppLint(filename:string, workspace:string, config: {[key:string]: any}) {
     let start = 'CppLint started: ' + new Date().toString();
     let cpplint = config["cpplintPath"];
-    let param:string[] = ['--output=vs7', filename]
+    let linelength = "--linelength=" + config['lineLength']
+    let param:string[] = ['--output=vs7', linelength, filename]
     let result = spawnSync(cpplint, param, {'cwd': workspace})
     let stdout = '' + result.stdout;
     let stderr = '' + result.stderr;
@@ -26,7 +27,8 @@ function runCppLint(filename:string, workspace:string, config: {[key:string]: an
 function runWholeCppLint(filename:string, workspace:string, config: {[key:string]: any}) {
     let start = 'CppLint started: ' + new Date().toString();
     let cpplint = config["cpplintPath"];
-    let param = ['--output=vs7', "--recursive", "."]
+    let linelength = "--linelength=" + config['lineLength']
+    let param = ['--output=vs7', linelength, "--recursive", "."]
     let result = spawnSync(cpplint, param, {'cwd': workspace})
     let stdout = '' + result.stdout;
     let stderr = '' + result.stderr;

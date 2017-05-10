@@ -21,8 +21,6 @@ let diagnosticCollection: vscode.DiagnosticCollection = vscode.languages.createD
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-    disposables = new Set();
-
     outputChannel = vscode.window.createOutputChannel('CppLint');
     // outputChannel.appendLine('CppLint is running.');
     // Use the console to output diagnostic information (console.log) and errors (console.error)
@@ -132,6 +130,9 @@ function readConfiguration() {
         }
 
         config['cpplintPath'] = cpplintPath;
+
+        var linelength = settings.get("lineLength", 80);
+        config['lineLength'] = linelength;
 
         var lintmode = settings.get('lintMode', 'single');
         config['lintMode'] = lintmode;

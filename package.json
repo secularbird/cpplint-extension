@@ -51,6 +51,11 @@
                         "workspace"
                     ],
                     "description": "single is fast, only provides information of current active file, workspace is slow, provides informations of the whole workspace"
+                },
+                "cpplint.lineLength": {
+                    "type": "number",
+                    "default": 80,
+                    "description": "This is the allowed line length for the project."
                 }
             }
         }
