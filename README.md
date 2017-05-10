@@ -44,6 +44,7 @@ ls -l /opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/cpplint
 
 * `cpplint.cpplintPath`: set cpplint executable path
 * `cpplint.lintMode`: set cpplint mode, avialable value are single and workspace
+* `cpplint.lineLength`: set line length strict, default is 80 characters
 
 ## Known Issues
 Any issues please contact: [cpplint](https://github.com/secularbird/cpplint-extension/issues)
