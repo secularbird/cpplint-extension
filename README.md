@@ -2,6 +2,8 @@
 
 This extension utilizes the cpplint checker to provide C and C++ code style checker within Visual Studio Code.
 
+[![Build Status](https://travis-ci.org/secularbird/cpplint-extension.svg?branch=master)](https://travis-ci.org/secularbird/cpplint-extension)
+
 ## Features
 
 * check coding style of cpp and c, when open and save source file
