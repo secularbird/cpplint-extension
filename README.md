@@ -6,7 +6,7 @@ This extension utilizes the cpplint checker to provide C and C++ code style chec
 
 * check coding style of cpp and c, when open and save source file
 
-![feature](feature.png)
+![feature](https://github.com/secularbird/cpplint-extension/raw/master/feature.png)
 
 
 ## Requirements
