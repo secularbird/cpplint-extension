@@ -48,6 +48,7 @@ function runAnalysis() : Promise<void> {
     }
     let filename = vscode.window.activeTextEditor.document.fileName;
     let workspace = vscode.workspace.rootPath;
+    filename = filename.slice(workspace.length + 1, filename.length);
     let result = an.runOnFile(filename, workspace, config);
 
     outputChannel.show();
@@ -65,6 +66,8 @@ function runWholeAnalysis() : Promise<void> {
     }
     let filename = vscode.window.activeTextEditor.document.fileName;
     let workspace = vscode.workspace.rootPath;
+    filename = filename.slice(workspace.length + 1, filename.length);
+
     let result = an.runOnWorkspace(filename, workspace, config);
 
     outputChannel.show();
@@ -136,6 +139,9 @@ function readConfiguration() {
 
         var lintmode = settings.get('lintMode', 'single');
         config['lintMode'] = lintmode;
+
+        var excludes = settings.get('excludes', [])
+        config['excludes'] = excludes; 
 
         if(config['lintMode'] == 'single') {
             vscode.workspace.onDidOpenTextDocument((() => doLint()).bind(this));

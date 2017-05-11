@@ -56,6 +56,11 @@
                     "type": "number",
                     "default": 80,
                     "description": "This is the allowed line length for the project."
+                },
+                "cpplint.excludes": {
+                    "type": "array",
+                    "default": [],
+                    "description": "Exclude the given path from the list of files to be linted.Relative paths are evaluated relative to the current directory and shell globbing is performed"
                 }
             }
         }

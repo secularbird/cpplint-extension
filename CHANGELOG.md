@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.0.5]
 - add line length configuration
 - add travis ci status
+- add exclude configuration
 
 ## [0.0.4]
 - fix readme image

@@ -15,7 +15,11 @@ function runCppLint(filename:string, workspace:string, config: {[key:string]: an
     let start = 'CppLint started: ' + new Date().toString();
     let cpplint = config["cpplintPath"];
     let linelength = "--linelength=" + config['lineLength']
-    let param:string[] = ['--output=vs7', linelength, filename]
+    let param:string[] = ['--output=vs7']
+    config['excludes'].forEach(element => {
+        param.push("--exclude=" + element)
+    });
+    param = param.concat([linelength, filename]);
     let result = spawnSync(cpplint, param, {'cwd': workspace})
     let stdout = '' + result.stdout;
     let stderr = '' + result.stderr;
@@ -28,7 +32,11 @@ function runWholeCppLint(filename:string, workspace:string, config: {[key:string
     let start = 'CppLint started: ' + new Date().toString();
     let cpplint = config["cpplintPath"];
     let linelength = "--linelength=" + config['lineLength']
-    let param = ['--output=vs7', linelength, "--recursive", "."]
+    let param:string[] = ['--output=vs7']
+    config['excludes'].forEach(element => {
+        param.push("--exclude=" + element)
+    });
+    param = param.concat([linelength, "--recursive", "."]);
     let result = spawnSync(cpplint, param, {'cwd': workspace})
     let stdout = '' + result.stdout;
     let stderr = '' + result.stderr;
