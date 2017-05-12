@@ -46,6 +46,8 @@ ls -l /opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/cpplint
 * `cpplint.lintMode`: set cpplint mode, avialable value are single and workspace
 * `cpplint.lineLength`: set line length strict, default is 80 characters
 * `cpplint.excludes`: set exclude rules, which is related path and shell globbing is preforming
+* `cpplint.filters`: set filters, only error messages whose category names pass the filters will be printed
+* `cpplint.verbose`: verbose level, errors with lower verbosity levels have lower confidence and are more likely to be false positives
 
 ## Known Issues
 Any issues please contact: [cpplint](https://github.com/secularbird/cpplint-extension/issues)

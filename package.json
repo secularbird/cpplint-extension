@@ -61,6 +61,19 @@
                     "type": "array",
                     "default": [],
                     "description": "Exclude the given path from the list of files to be linted.Relative paths are evaluated relative to the current directory and shell globbing is performed"
+                },
+                "cpplint.filters": {
+                    "type": "array",
+                    "default": [],
+                    "description": "Specify a comma-separated list of category-filters to apply: only error messages whose category names pass the filters will be printed."
+                },
+                "cpplint.verbose": {
+                    "type": "number",
+                    "default": 0,
+                    "enum":[
+                        0, 1, 2, 4, 5
+                    ],
+                    "description": "Specify a number 0-5 to restrict errors to certain verbosity levels. Errors with lower verbosity levels have lower confidence and are more likely to be false positives."
                 }
             }
         }

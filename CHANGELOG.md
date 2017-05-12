@@ -7,6 +7,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - add line length configuration
 - add travis ci status
 - add exclude configuration
+- add filters configuration
+- add verbose configuration
 
 ## [0.0.4]
 - fix readme image

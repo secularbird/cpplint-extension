@@ -143,6 +143,12 @@ function readConfiguration() {
         var excludes = settings.get('excludes', [])
         config['excludes'] = excludes; 
 
+        var filters = settings.get("filters", [])
+        config["filters"] = filters;
+
+        var verbose = settings.get("verbose", 0)
+        config['verbose'] = verbose;
+
         if(config['lintMode'] == 'single') {
             vscode.workspace.onDidOpenTextDocument((() => doLint()).bind(this));
             vscode.workspace.onDidSaveTextDocument((() => doLint()).bind(this));
