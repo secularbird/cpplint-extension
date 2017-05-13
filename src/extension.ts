@@ -147,7 +147,7 @@ function readConfiguration() {
         config["filters"] = filters;
 
         config["filters"].forEach(element => {
-            if (element[0] != '-' || element[0] != '+') {
+            if (element[0] != '-' && element[0] != '+') {
                 vscode.window.showErrorMessage("filter [" + element+ '] must start with + or -, please check your settings');
                 return false;
             }
