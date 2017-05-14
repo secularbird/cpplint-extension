@@ -16,12 +16,25 @@ function runCppLint(filename:string, workspace:string, config: {[key:string]: an
     let cpplint = config["cpplintPath"];
     let linelength = "--linelength=" + config['lineLength'];
     let param:string[] = ['--output=vs7', linelength];
-    config['excludes'].forEach(element => {
-        param.push("--exclude=" + element)
-    });
-    config['filters'].forEach(element => {
-        param.push("--filter=" + element)
-    });
+
+    if (config['excludes'].length != 0) {
+        config['excludes'].forEach(element => {
+            param.push("--exclude=" + element)
+        });
+    }
+    if (config['filters'].length != 0) {
+        let filter:string = "";
+        config['filters'].forEach(element => {
+            if(filter == "") {
+                filter = element;
+            } else {
+                filter = filter + "," + element
+            }
+        });
+        filter = "--filter=" + filter;
+        param.push(filter);
+    }
+
     param.push("--verbose=" + config['verbose']);
 
     if (enableworkspace) {
