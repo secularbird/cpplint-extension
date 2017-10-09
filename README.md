@@ -10,39 +10,63 @@ This extension utilizes the cpplint checker to provide C and C++ code style chec
 
 ![feature](https://github.com/secularbird/cpplint-extension/raw/master/feature.png)
 
-
 ## Requirements
 
 ### Install cpplint
 
-#### install from source
+#### Install from source
+
 https://github.com/google/styleguide/tree/gh-pages/cpplint
 
-#### Mac & linux:
+#### Mac & Linux
+
 ```bash
 sudo pip install cpplint
 ```
 
+#### Windows
+
+* install anaconda   
+download link: https://repo.continuum.io/archive/Anaconda2-5.0.0-Windows-x86_64.exe
+
+* install cpplint   
+open the anaconda Prompt, run the following command
+```batch
+pip install cpplint
+```
+
 #### Check the install result
-##### linux:
+
+##### Linux
+
 ```text
 ls -l /usr/local/bin/cpplint
 -rwxr-xr-x 1 root root 381 May  3 08:19 /usr/local/bin/cpplint
 ```
-##### Mac:
-```
+
+##### Mac
+
+```bash
 ls -l /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin/cpplint
 -rwxr-xr-x  1 root  wheel  468 Apr 30 22:57 /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin/cpplint
 ```
+
 or
-```
+
+```bash
 ls -l /opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/cpplint
 -rwxr-xr-x  1 root  wheel  267 Apr 30 22:03 /opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/cpplint
 ```
 
+##### Windows
+
+``` bath
+dir c:\ProgramData\Anaconda2\Scripts\cpplint.exe
+```
+
 ## Extension Settings
 
-* `cpplint.cpplintPath`: set cpplint executable path
+* `cpplint.cpplintPath`: set cpplint executable path, path on windows should like `c:\\ProgramData\\Anaconda2\\Scripts\\cpplint.exe`
 * `cpplint.lintMode`: set cpplint mode, avialable value are single and workspace
 * `cpplint.lineLength`: set line length strict, default is 80 characters
 * `cpplint.excludes`: set exclude rules, which is related path and shell globbing is preforming
@@ -50,4 +74,5 @@ ls -l /opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/cpplint
 * `cpplint.verbose`: verbose level, errors with lower verbosity levels have lower confidence and are more likely to be false positives
 
 ## Known Issues
+
 Any issues please contact: [cpplint](https://github.com/secularbird/cpplint-extension/issues)
