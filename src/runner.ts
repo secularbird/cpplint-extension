@@ -22,6 +22,19 @@ function runCppLint(filename:string, workspaces:string[], config: {[key:string]:
             param.push("--exclude=" + element)
         });
     }
+
+    if (config['repository'].length != 0) {
+        param.push("--repository=" + config['repository'])
+    }
+
+    if (config['root'].length != 0) {
+        if (config["root"] != "${workspaceFolder}") {
+            param.push("--root=" + config['root']);
+        } else {
+            param.push("--root=" + workspaces[0]);
+        }
+    }
+
     if (config['filters'].length != 0) {
         let filter:string = "";
         config['filters'].forEach(element => {

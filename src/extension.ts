@@ -149,6 +149,12 @@ function readConfiguration() {
         var filters = settings.get("filters", [])
         config["filters"] = filters;
 
+        var root = settings.get("root", "")
+        config["root"] = root;
+
+        var repository = settings.get("repository", "")
+        config["repository"] = repository;
+
         config["filters"].forEach(element => {
             if (element[0] != '-' && element[0] != '+') {
                 vscode.window.showErrorMessage("filter [" + element+ '] must start with + or -, please check your settings');

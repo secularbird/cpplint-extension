@@ -2,7 +2,7 @@
     "name": "cpplint",
     "displayName": "cpplint",
     "description": "code style check tool extension for cpplint",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "publisher": "mine",
     "repository": {
         "type": "Git",
@@ -81,6 +81,16 @@
                         5
                     ],
                     "description": "Specify a number 0-5 to restrict errors to certain verbosity levels. Errors with lower verbosity levels have lower confidence and are more likely to be false positives."
+                },
+                "cpplint.repository": {
+                    "type": "string",
+                    "default": "",
+                    "description": "The top level directory of the repository, used to derive the header guard CPP variable. By default, this is determined by searching for a path that contains .git, .hg, or .svn. When this flag is specified, the given path is used instead. This option allows the header guard CPP variable to remain consistent even if members of a team have different repository root directories (such as when checking out a subdirectory with SVN). In addition, users of non-mainstream version control systems can use this flag to ensure readable header guard CPP variables."
+                },
+                "cpplint.root": {
+                    "type": "string",
+                    "default": "${workspaceFolder}",
+                    "description": "The top level directory of the repository, used to derive the header guard CPP variable. By default, this is determined by searching for a path that contains .git, .hg, or .svn. When this flag is specified, the given path is used instead. This option allows the header guard CPP variable to remain consistent even if members of a team have different repository root directories (such as when checking out a subdirectory with SVN). In addition, users of non-mainstream version control systems can use this flag to ensure readable header guard CPP variables."
                 }
             }
         }
