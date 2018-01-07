@@ -78,14 +78,16 @@ export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection
 }
 
 export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: {[key:string]:any}, enableworkspace:boolean) {
-    let filename = vscode.window.activeTextEditor.document.fileName
-    let rootpath = vscode.workspace.rootPath
-    filename = filename.slice(rootpath.length + 1, filename.length);
     let cpplintOutput;
     if (enableworkspace) {
-        cpplintOutput = runOnWorkspace(filename, rootpath, config);
+        var workspaces:string[];
+        for(let folder of vscode.workspace.workspaceFolders) {
+            workspaces.join(folder.uri.fsPath)
+        }
+        cpplintOutput = runOnWorkspace(workspaces, config);
     } else {
-        cpplintOutput = runOnFile(filename, rootpath, config);
+        let filename = vscode.window.activeTextEditor.document.fileName
+        cpplintOutput = runOnFile(filename, null, config);
     }
     analysisResult(diagnosticCollection, cpplintOutput)
 }

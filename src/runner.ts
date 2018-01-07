@@ -1,17 +1,17 @@
 import { spawnSync } from "child_process";
 import * as vscode from 'vscode';
 
-export function runOnFile(filename:string, workspace:string, config: {[key:string]: any}){
-    let result = runCppLint(filename, workspace, config, false);
+export function runOnFile(filename:string, workspaces:string[], config: {[key:string]: any}){
+    let result = runCppLint(filename, workspaces, config, false);
     return result;
 }
 
-export function runOnWorkspace(filename:string, workspace:string, config: {[key:string]: any}){
-    let result = runCppLint(filename, workspace, config, true);
+export function runOnWorkspace(workspaces:string[], config: {[key:string]: any}){
+    let result = runCppLint(null, workspaces, config, true);
     return result;
 }
 
-function runCppLint(filename:string, workspace:string, config: {[key:string]: any}, enableworkspace:boolean) {
+function runCppLint(filename:string, workspaces:string[], config: {[key:string]: any}, enableworkspace:boolean) {
     let start = 'CppLint started: ' + new Date().toString();
     let cpplint = config["cpplintPath"];
     let linelength = "--linelength=" + config['lineLength'];
@@ -38,11 +38,13 @@ function runCppLint(filename:string, workspace:string, config: {[key:string]: an
     param.push("--verbose=" + config['verbose']);
 
     if (enableworkspace) {
-        param = param.concat([ "--recursive", "."]);
+        param = param.concat(["--recursive"]);
+        param = param.concat(workspaces);
     } else {
         param.push(filename);
     }
-    let result = spawnSync(cpplint, param, {'cwd': workspace})
+
+    let result = spawnSync(cpplint, param)
     let stdout = '' + result.stdout;
     let stderr = '' + result.stderr;
     let end = 'CppLint ended: ' + new Date().toString();

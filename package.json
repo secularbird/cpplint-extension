@@ -2,17 +2,20 @@
     "name": "cpplint",
     "displayName": "cpplint",
     "description": "code style check tool extension for cpplint",
-    "version": "0.0.5",
+    "version": "0.0.7",
     "publisher": "mine",
     "repository": {
         "type": "Git",
         "url": "https://github.com/secularbird/cpplint-extension"
     },
     "engines": {
-        "vscode": "^1.11.0"
+        "vscode": "^1.15.0"
     },
     "categories": [
         "Linters"
+    ],
+    "keywords": [
+        "multi-root ready"
     ],
     "activationEvents": [
         "onLanguage:cpp",
@@ -70,8 +73,12 @@
                 "cpplint.verbose": {
                     "type": "number",
                     "default": 0,
-                    "enum":[
-                        0, 1, 2, 4, 5
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        4,
+                        5
                     ],
                     "description": "Specify a number 0-5 to restrict errors to certain verbosity levels. Errors with lower verbosity levels have lower confidence and are more likely to be false positives."
                 }
