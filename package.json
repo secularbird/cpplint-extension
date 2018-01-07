@@ -9,10 +9,13 @@
         "url": "https://github.com/secularbird/cpplint-extension"
     },
     "engines": {
-        "vscode": "^1.18.0"
+        "vscode": "^1.15.0"
     },
     "categories": [
         "Linters"
+    ],
+    "keywords": [
+        "multi-root ready"
     ],
     "activationEvents": [
         "onLanguage:cpp",
