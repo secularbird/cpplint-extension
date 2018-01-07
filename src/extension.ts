@@ -44,12 +44,17 @@ export function activate(context: vscode.ExtensionContext) {
 function runAnalysis() : Promise<void> {
     var edit = vscode.window.activeTextEditor;
     if (!edit) {
-        return;
+        return Promise.reject("no edit opened");
     }
-    let filename = vscode.window.activeTextEditor.document.fileName;
-    let workspace = vscode.workspace.rootPath;
-    filename = filename.slice(workspace.length + 1, filename.length);
-    let result = an.runOnFile(filename, workspace, config);
+    let activedoc = vscode.window.activeTextEditor.document;
+    let filename = activedoc.fileName;
+    let workspacefolder = vscode.workspace.getWorkspaceFolder(activedoc.uri)
+    let workspaces = null;
+    if(workspacefolder != undefined) {
+        workspaces = [workspacefolder.uri.fsPath]
+    }
+
+    let result = an.runOnFile(filename, workspaces, config);
 
     outputChannel.show();
     outputChannel.clear();
@@ -60,15 +65,13 @@ function runAnalysis() : Promise<void> {
 }
 
 function runWholeAnalysis() : Promise<void> {
-    var edit = vscode.window.activeTextEditor;
-    if (!edit) {
-        return;
-    }
-    let filename = vscode.window.activeTextEditor.document.fileName;
-    let workspace = vscode.workspace.rootPath;
-    filename = filename.slice(workspace.length + 1, filename.length);
 
-    let result = an.runOnWorkspace(filename, workspace, config);
+    let workspaces:string[] = [];
+    for(let folder of vscode.workspace.workspaceFolders) {
+        workspaces = workspaces.concat(folder.uri.fsPath)
+    }
+
+    let result = an.runOnWorkspace(workspaces, config);
 
     outputChannel.show();
     outputChannel.clear();
