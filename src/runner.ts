@@ -1,21 +1,21 @@
 import { spawnSync } from "child_process";
 import * as vscode from 'vscode';
 
-export function runOnFile(filename:string, workspaces:string[], config: {[key:string]: any}){
+export function runOnFile(filename: string, workspaces: string[], config: { [key: string]: any }) {
     let result = runCppLint(filename, workspaces, config, false);
     return result;
 }
 
-export function runOnWorkspace(workspaces:string[], config: {[key:string]: any}){
+export function runOnWorkspace(workspaces: string[], config: { [key: string]: any }) {
     let result = runCppLint(null, workspaces, config, true);
     return result;
 }
 
-function runCppLint(filename:string, workspaces:string[], config: {[key:string]: any}, enableworkspace:boolean) {
+function runCppLint(filename: string, workspaces: string[], config: { [key: string]: any }, enableworkspace: boolean) {
     let start = 'CppLint started: ' + new Date().toString();
     let cpplint = config["cpplintPath"];
     let linelength = "--linelength=" + config['lineLength'];
-    let param:string[] = ['--output=vs7', linelength];
+    let param: string[] = ['--output=vs7', linelength];
 
     if (config['excludes'].length != 0) {
         config['excludes'].forEach(element => {
@@ -24,9 +24,9 @@ function runCppLint(filename:string, workspaces:string[], config: {[key:string]:
     }
 
     if (config['filters'].length != 0) {
-        let filter:string = "";
+        let filter: string = "";
         config['filters'].forEach(element => {
-            if(filter == "") {
+            if (filter == "") {
                 filter = element;
             } else {
                 filter = filter + "," + element
@@ -60,19 +60,19 @@ function runCppLint(filename:string, workspaces:string[], config: {[key:string]:
         return out.join('\n');
 
     } else {
+        let workspace = ""
+        if (workspaces != null) {
+            workspace = workspaces[0]
+        }
+
         if (config['repository'].length != 0) {
-            if (workspaces != null) {
-                let workspace = workspaces[0]
-                param.push("--repository=" + config["repository"].replace("${workspaceFloder}", workspace));
-            }
+            param.push("--repository=" + config["repository"].replace("${workspaceFloder}", workspace));
         }
 
         if (config['root'].length != 0) {
-            if (workspaces != null) {
-                let workspace = workspaces[0]
-                param.push("--root=" + config["root"].replace("${workspaceFolder}", workspace));
-            }
+            param.push("--root=" + config["root"].replace("${workspaceFolder}", workspace));
         }
+
         param.push(filename);
         let output = lint(cpplint, param)
         let end = 'CppLint ended: ' + new Date().toString();
@@ -81,7 +81,7 @@ function runCppLint(filename:string, workspaces:string[], config: {[key:string]:
     }
 }
 
-function lint(exec:string, params:string[]) {
+function lint(exec: string, params: string[]) {
     let result = spawnSync(exec, params)
     let stdout = result.stdout;
     let stderr = result.stderr;
