@@ -23,20 +23,6 @@ function runCppLint(filename:string, workspaces:string[], config: {[key:string]:
         });
     }
 
-    if (config['repository'].length != 0) {
-        if (workspaces != null) {
-            let workspace = workspaces[0]
-            param.push("--repository=" + config["repository"].replace("${workspaceFloder}", workspace));
-        }
-    }
-
-    if (config['root'].length != 0) {
-        if (workspaces != null) {
-            let workspace = workspaces[0]
-            param.push("--root=" + config["root"].replace("${workspaceFolder}", workspace));
-        }
-    }
-
     if (config['filters'].length != 0) {
         let filter:string = "";
         config['filters'].forEach(element => {
@@ -53,16 +39,52 @@ function runCppLint(filename:string, workspaces:string[], config: {[key:string]:
     param.push("--verbose=" + config['verbose']);
 
     if (enableworkspace) {
-        param = param.concat(["--recursive"]);
-        param = param.concat(workspaces);
-    } else {
-        param.push(filename);
-    }
+        let out = [start];
+        for (let workspace of workspaces) {
+            out.push("Scan workspace: " + workspace);
+            let workspaceparam = param;
+            if (config['repository'].length != 0) {
+                workspaceparam.push("--repository=" + config["repository"].replace("${workspaceFloder}", workspace));
+            }
 
-    let result = spawnSync(cpplint, param)
-    let stdout = '' + result.stdout;
-    let stderr = '' + result.stderr;
-    let end = 'CppLint ended: ' + new Date().toString();
-    let out = [start, stdout, stderr, end].join('\n');
+            if (config['root'].length != 0) {
+                workspaceparam.push("--root=" + config["root"].replace("${workspaceFolder}", workspace));
+            }
+            workspaceparam = workspaceparam.concat(["--recursive", workspace]);
+
+            let output = lint(cpplint, workspaceparam)
+            out = out.concat(output)
+        }
+        let end = 'CppLint ended: ' + new Date().toString();
+        out.push(end);
+        return out.join('\n');
+
+    } else {
+        if (config['repository'].length != 0) {
+            if (workspaces != null) {
+                let workspace = workspaces[0]
+                param.push("--repository=" + config["repository"].replace("${workspaceFloder}", workspace));
+            }
+        }
+
+        if (config['root'].length != 0) {
+            if (workspaces != null) {
+                let workspace = workspaces[0]
+                param.push("--root=" + config["root"].replace("${workspaceFolder}", workspace));
+            }
+        }
+        param.push(filename);
+        let output = lint(cpplint, param)
+        let end = 'CppLint ended: ' + new Date().toString();
+        let out = [start].concat(output).concat(end)
+        return out.join('\n');
+    }
+}
+
+function lint(exec:string, params:string[]) {
+    let result = spawnSync(exec, params)
+    let stdout = result.stdout;
+    let stderr = result.stderr;
+    let out = [result.stdout, result.stderr]
     return out;
 }
