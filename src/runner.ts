@@ -24,14 +24,16 @@ function runCppLint(filename:string, workspaces:string[], config: {[key:string]:
     }
 
     if (config['repository'].length != 0) {
-        param.push("--repository=" + config['repository'])
+        if (workspaces != null) {
+            let workspace = workspaces[0]
+            param.push("--repository=" + config["repository"].replace("${workspaceFloder}", workspace));
+        }
     }
 
     if (config['root'].length != 0) {
-        if (config["root"] != "${workspaceFolder}") {
-            param.push("--root=" + config['root']);
-        } else {
-            param.push("--root=" + workspaces[0]);
+        if (workspaces != null) {
+            let workspace = workspaces[0]
+            param.push("--root=" + config["root"].replace("${workspaceFolder}", workspace));
         }
     }
 

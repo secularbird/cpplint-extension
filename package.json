@@ -90,7 +90,7 @@
                 "cpplint.root": {
                     "type": "string",
                     "default": "${workspaceFolder}",
-                    "description": "The top level directory of the repository, used to derive the header guard CPP variable. By default, this is determined by searching for a path that contains .git, .hg, or .svn. When this flag is specified, the given path is used instead. This option allows the header guard CPP variable to remain consistent even if members of a team have different repository root directories (such as when checking out a subdirectory with SVN). In addition, users of non-mainstream version control systems can use this flag to ensure readable header guard CPP variables."
+                    "description": "The root directory used for deriving header guard CPP variables. This directory is relative to the top level directory of the repository which by default is determined by searching for a directory that contains .git, .hg, or .svn but can also be controlled with the --repository flag. If the specified directory does not exist, this flag is ignored."
                 }
             }
         }
