@@ -66,7 +66,7 @@ function runCppLint(filename: string, workspaces: string[], config: { [key: stri
         }
 
         if (config['repository'].length != 0) {
-            param.push("--repository=" + config["repository"].replace("${workspaceFloder}", workspace));
+            param.push("--repository=" + config["repository"].replace("${workspaceFolder}", workspace));
         }
 
         if (config['root'].length != 0) {
