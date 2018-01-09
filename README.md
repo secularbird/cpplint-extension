@@ -71,6 +71,8 @@ dir c:\ProgramData\Anaconda2\Scripts\cpplint.exe
 * `cpplint.lineLength`: set line length strict, default is 80 characters
 * `cpplint.excludes`: set exclude rules, which is related path and shell globbing is preforming
 * `cpplint.filters`: set filters, only error messages whose category names pass the filters will be printed
+* `cpplint.root`: set the root directory used for deriving header guard CPP variables
+* `cpplint.repository`: set top level directory of the repository, used to derive the header guard CPP variable
 * `cpplint.verbose`: verbose level, errors with lower verbosity levels have lower confidence and are more likely to be false positives
 
 ## Known Issues
