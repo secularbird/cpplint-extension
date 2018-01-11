@@ -36,6 +36,10 @@ function runCppLint(filename: string, workspaces: string[], config: { [key: stri
         param.push(filter);
     }
 
+    param.push("--extensions=" + config["extensions"].join(','))
+
+    param.push("--headers=" + config["headers"].join(','))
+
     param.push("--verbose=" + config['verbose']);
 
     if (enableworkspace) {

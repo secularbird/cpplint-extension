@@ -3,6 +3,11 @@ All notable changes to the "cpplint" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.9]
+### Add
+
+- add extensions and header setting arguments
+
 ## [0.0.8]
 ### Add
 
