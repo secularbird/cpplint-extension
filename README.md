@@ -73,6 +73,8 @@ dir c:\ProgramData\Anaconda2\Scripts\cpplint.exe
 * `cpplint.filters`: set filters, only error messages whose category names pass the filters will be printed
 * `cpplint.root`: set the root directory used for deriving header guard CPP variables
 * `cpplint.repository`: set top level directory of the repository, used to derive the header guard CPP variable
+* `cpplint.extensions`: set the allowed file extensions that cpplint will check
+* `cpplint.headers`: set the allowed header extensions that cpplint will consider to be header files
 * `cpplint.verbose`: verbose level, errors with lower verbosity levels have lower confidence and are more likely to be false positives
 
 ## Known Issues

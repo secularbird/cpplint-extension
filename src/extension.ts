@@ -152,6 +152,12 @@ function readConfiguration() {
         var root = settings.get("root", "")
         config["root"] = root;
 
+        var extensions = settings.get("extensions", "")
+        config["extensions"] = extensions;
+
+        var headers = settings.get("headers", "")
+        config["headers"] = headers;
+
         var repository = settings.get("repository", "")
         config["repository"] = repository;
 

@@ -2,7 +2,7 @@
     "name": "cpplint",
     "displayName": "cpplint",
     "description": "code style check tool extension for cpplint",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "publisher": "mine",
     "repository": {
         "type": "Git",
@@ -91,6 +91,16 @@
                     "type": "string",
                     "default": "${workspaceFolder}/include",
                     "description": "The root directory used for deriving header guard CPP variables. This directory is relative to the top level directory of the repository which by default is determined by searching for a directory that contains .git, .hg, or .svn but can also be controlled with the --repository flag. If the specified directory does not exist, this flag is ignored."
+                },
+                "cpplint.extensions": {
+                    "type": "array",
+                    "default": ["cpp", "h++" , "cuh", "c", "c++", "cu", "hxx", "hpp", "cc", "cxx", "h"],
+                    "description": "The allowed file extensions that cpplint will check."
+                },
+                "cpplint.headers": {
+                    "type": "array",
+                    "default": ["h++", "cuh", "hxx", "hpp", "h"],
+                    "description": "The allowed header extensions that cpplint will consider to be header files."
                 }
             }
         }
