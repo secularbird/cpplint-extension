@@ -1,18 +1,20 @@
 import { spawnSync } from "child_process";
 import * as vscode from 'vscode';
+import { ConfigManager } from "./configuration";
 
-export function runOnFile(filename: string, workspaces: string[], config: { [key: string]: any }) {
-    let result = runCppLint(filename, workspaces, config, false);
+export function runOnFile(filename: string, workspaces: string[]) {
+    let result = runCppLint(filename, workspaces, false);
     return result;
 }
 
-export function runOnWorkspace(workspaces: string[], config: { [key: string]: any }) {
-    let result = runCppLint(null, workspaces, config, true);
+export function runOnWorkspace(workspaces: string[]) {
+    let result = runCppLint(null, workspaces, true);
     return result;
 }
 
-function runCppLint(filename: string, workspaces: string[], config: { [key: string]: any }, enableworkspace: boolean) {
+function runCppLint(filename: string, workspaces: string[], enableworkspace: boolean) {
     let start = 'CppLint started: ' + new Date().toString();
+    let config = ConfigManager.getInstance().getConfig();
     let cpplint = config["cpplintPath"];
     let linelength = "--linelength=" + config['lineLength'];
     let param: string[] = ['--output=vs7', linelength];
@@ -24,21 +26,16 @@ function runCppLint(filename: string, workspaces: string[], config: { [key: stri
     }
 
     if (config['filters'].length != 0) {
-        let filter: string = "";
-        config['filters'].forEach(element => {
-            if (filter == "") {
-                filter = element;
-            } else {
-                filter = filter + "," + element
-            }
-        });
-        filter = "--filter=" + filter;
-        param.push(filter);
+        param.push("--filter=" + config["filters"].join(','))
     }
 
-    param.push("--extensions=" + config["extensions"].join(','))
+    if (config["extensions"].length != 0) {
+        param.push("--extensions=" + config["extensions"].join(','))
+    }
 
-    param.push("--headers=" + config["headers"].join(','))
+    if (config["headers"].length != 0) {
+        param.push("--headers=" + config["headers"].join(','))
+    }
 
     param.push("--verbose=" + config['verbose']);
 

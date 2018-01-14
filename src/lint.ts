@@ -10,7 +10,6 @@ import * as path from 'path';
 import { runOnFile } from './runner';
 import { runOnWorkspace } from './runner';
 
-
 function getCorrectFileName(p: string): string {
     if (!fs.existsSync(p)) {
         p = path.join(vscode.workspace.rootPath, p);
@@ -77,14 +76,14 @@ export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection
     }
 }
 
-export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: {[key:string]:any}, enableworkspace:boolean) {
+export function Lint(diagnosticCollection: vscode.DiagnosticCollection, enableworkspace:boolean) {
     let cpplintOutput;
     if (enableworkspace) {
         let workspaces:string[] = [];
         for(let folder of vscode.workspace.workspaceFolders) {
             workspaces = workspaces.concat(folder.uri.fsPath)
         }
-        cpplintOutput = runOnWorkspace(workspaces, config);
+        cpplintOutput = runOnWorkspace(workspaces);
     } else {
         let activedoc = vscode.window.activeTextEditor.document;
         let filename = activedoc.fileName;
@@ -93,7 +92,7 @@ export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: 
         if(workspacefolder != undefined) {
             workspaces = [workspacefolder.uri.fsPath]
         }
-        cpplintOutput = runOnFile(filename, workspaces, config);
+        cpplintOutput = runOnFile(filename, workspaces);
     }
     analysisResult(diagnosticCollection, cpplintOutput)
 }
