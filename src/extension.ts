@@ -144,7 +144,7 @@ function readConfiguration() {
         config['lintMode'] = lintmode;
 
         var excludes = settings.get('excludes', [])
-        config['excludes'] = excludes; 
+        config['excludes'] = excludes;
 
         var filters = settings.get("filters", [])
         config["filters"] = filters;
@@ -154,6 +154,9 @@ function readConfiguration() {
 
         var extensions = settings.get("extensions", "")
         config["extensions"] = extensions;
+
+        var languages = settings.get("languages", [])
+        config["languages"] = languages;
 
         var headers = settings.get("headers", "")
         config["headers"] = headers;
