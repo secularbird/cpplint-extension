@@ -93,9 +93,7 @@ export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: 
         if(workspacefolder != undefined) {
             workspaces = [workspacefolder.uri.fsPath]
         }
-        if (config.languages.indexOf(activedoc.languageId) >= 0) {
-            cpplintOutput = runOnFile(filename, workspaces, config);
-        }
+        cpplintOutput = runOnFile(filename, workspaces, config);
     }
     analysisResult(diagnosticCollection, cpplintOutput)
 }
