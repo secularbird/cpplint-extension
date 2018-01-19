@@ -87,12 +87,14 @@ export function deactivate() {
 }
 
 function doLint() {
-    let language = vscode.window.activeTextEditor.document.languageId
-    if(config.languages.indexOf(language) >= 0) {
-        if (config['lintMode'] == 'workspace') {
-            Lint(diagnosticCollection, config, true);
-        } else {
-            Lint(diagnosticCollection, config, false);
+    if (vscode.window.activeTextEditor) {
+        let language = vscode.window.activeTextEditor.document.languageId
+        if(config.languages.indexOf(language) >= 0) {
+            if (config['lintMode'] == 'workspace') {
+                Lint(diagnosticCollection, config, true);
+            } else {
+                Lint(diagnosticCollection, config, false);
+            }
         }
     }
     clearTimeout(timer)
