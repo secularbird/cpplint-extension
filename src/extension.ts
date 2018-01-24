@@ -87,12 +87,14 @@ export function deactivate() {
 }
 
 function doLint() {
-    let language = vscode.window.activeTextEditor.document.languageId
-    if(language == "c" || language == "cpp") {
-        if (config['lintMode'] == 'workspace') {
-            Lint(diagnosticCollection, config, true);
-        } else {
-            Lint(diagnosticCollection, config, false);
+    if (vscode.window.activeTextEditor) {
+        let language = vscode.window.activeTextEditor.document.languageId
+        if(config.languages.indexOf(language) >= 0) {
+            if (config['lintMode'] == 'workspace') {
+                Lint(diagnosticCollection, config, true);
+            } else {
+                Lint(diagnosticCollection, config, false);
+            }
         }
     }
     clearTimeout(timer)
@@ -144,7 +146,7 @@ function readConfiguration() {
         config['lintMode'] = lintmode;
 
         var excludes = settings.get('excludes', [])
-        config['excludes'] = excludes; 
+        config['excludes'] = excludes;
 
         var filters = settings.get("filters", [])
         config["filters"] = filters;
@@ -154,6 +156,9 @@ function readConfiguration() {
 
         var extensions = settings.get("extensions", "")
         config["extensions"] = extensions;
+
+        var languages = settings.get("languages", [])
+        config["languages"] = languages;
 
         var headers = settings.get("headers", "")
         config["headers"] = headers;

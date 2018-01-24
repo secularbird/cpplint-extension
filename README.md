@@ -26,10 +26,10 @@ sudo pip install cpplint
 
 #### Windows
 
-* install anaconda   
+* install anaconda
 download link: https://repo.continuum.io/archive/Anaconda2-5.0.0-Windows-x86_64.exe
 
-* install cpplint   
+* install cpplint
 open the anaconda Prompt, run the following command
 ```batch
 pip install cpplint
@@ -74,6 +74,7 @@ dir c:\ProgramData\Anaconda2\Scripts\cpplint.exe
 * `cpplint.root`: set the root directory used for deriving header guard CPP variables
 * `cpplint.repository`: set top level directory of the repository, used to derive the header guard CPP variable
 * `cpplint.extensions`: set the allowed file extensions that cpplint will check
+* `cpplint.languages`: set the allowed vscode language identifiers that cpplint will check *(Currently only on single file mode)*
 * `cpplint.headers`: set the allowed header extensions that cpplint will consider to be header files
 * `cpplint.verbose`: verbose level, errors with lower verbosity levels have lower confidence and are more likely to be false positives
 

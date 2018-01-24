@@ -94,12 +94,38 @@
                 },
                 "cpplint.extensions": {
                     "type": "array",
-                    "default": ["cpp", "h++" , "cuh", "c", "c++", "cu", "hxx", "hpp", "cc", "cxx", "h"],
+                    "default": [
+                        "cpp",
+                        "h++",
+                        "cuh",
+                        "c",
+                        "c++",
+                        "cu",
+                        "hxx",
+                        "hpp",
+                        "cc",
+                        "cxx",
+                        "h"
+                    ],
                     "description": "The allowed file extensions that cpplint will check."
+                },
+                "cpplint.languages": {
+                    "type": "array",
+                    "default": [
+                        "cpp",
+                        "c"
+                    ],
+                    "description": "The allowed vscode language identifiers that cpplint will check."
                 },
                 "cpplint.headers": {
                     "type": "array",
-                    "default": ["h++", "cuh", "hxx", "hpp", "h"],
+                    "default": [
+                        "h++",
+                        "cuh",
+                        "hxx",
+                        "hpp",
+                        "h"
+                    ],
                     "description": "The allowed header extensions that cpplint will consider to be header files."
                 }
             }

@@ -40,7 +40,7 @@ export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection
     let regexArray: RegExpExecArray;
     let fileData: {[key:string]:RegExpExecArray[]} = {};
     while (regexArray = regex.exec(result)) {
-        if (regexArray[1] === undefined || regexArray[2] === undefined 
+        if (regexArray[1] === undefined || regexArray[2] === undefined
             || regexArray[3] === undefined || regexArray[4] === undefined
             || regexArray[5] === undefined ) {
             continue;
