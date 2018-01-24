@@ -104,6 +104,7 @@ function startLint() {
 function loadConfigure() {
     ConfigManager.getInstance().initialize();
     if (ConfigManager.getInstance().isSingleMode()) {
+        doLint();
         vscode.workspace.onDidOpenTextDocument((() => doLint()).bind(this));
         vscode.workspace.onDidSaveTextDocument((() => doLint()).bind(this));
     } else {
