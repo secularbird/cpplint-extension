@@ -58,7 +58,7 @@ export class ConfigManager {
     }
 
     public isSupportLanguage(language: string): boolean {
-        if (this.config["launages"].indexOf(language) >= 0) {
+        if (this.config["languages"].indexOf(language) >= 0) {
             return true;
         } else {
             return false;
