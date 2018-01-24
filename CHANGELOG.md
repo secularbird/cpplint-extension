@@ -3,6 +3,15 @@ All notable changes to the "cpplint" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.10]
+### Add
+
+- add lint language settings
+
+### fix
+
+- when no active editer exists, extension will crash
+
 ## [0.0.9]
 ### Add
 
