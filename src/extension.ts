@@ -51,11 +51,17 @@ function runAnalysis() : Promise<void> {
         workspaces = [workspacefolder.uri.fsPath]
     }
 
-    let result = an.runOnFile(filename, workspaces);
-
     outputChannel.show();
     outputChannel.clear();
+
+    let start = 'CppLint started: ' + new Date().toString();
+    outputChannel.appendLine(start);
+
+    let result = an.runOnFile(filename, workspaces);
     outputChannel.appendLine(result);
+
+    let end = 'CppLint ended: ' + new Date().toString();
+    outputChannel.appendLine(end);
 
     // vscode.window.showInformationMessage(edit.document.uri.fsPath)
     return Promise.resolve()
@@ -68,11 +74,18 @@ function runWholeAnalysis() : Promise<void> {
         workspaces = workspaces.concat(folder.uri.fsPath)
     }
 
-    let result = an.runOnWorkspace(workspaces);
-
     outputChannel.show();
     outputChannel.clear();
+
+    let start = 'CppLint started: ' + new Date().toString();
+    outputChannel.appendLine(start);
+
+    let result = an.runOnWorkspace(workspaces);
     outputChannel.appendLine(result);
+
+    let end = 'CppLint ended: ' + new Date().toString();
+    outputChannel.appendLine(end);
+
     // vscode.window.showInformationMessage(edit.document.uri.fsPath)
     return Promise.resolve()
 }

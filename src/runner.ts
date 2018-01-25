@@ -13,7 +13,6 @@ export function runOnWorkspace(workspaces: string[]) {
 }
 
 function runCppLint(filename: string, workspaces: string[], enableworkspace: boolean) {
-    let start = 'CppLint started: ' + new Date().toString();
     let config = ConfigManager.getInstance().getConfig();
     let cpplint = config["cpplintPath"];
     let linelength = "--linelength=" + config['lineLength'];
@@ -40,7 +39,7 @@ function runCppLint(filename: string, workspaces: string[], enableworkspace: boo
     param.push("--verbose=" + config['verbose']);
 
     if (enableworkspace) {
-        let out = [start];
+        let out = [];
         for (let workspace of workspaces) {
             out.push("Scan workspace: " + workspace);
             let workspaceparam = param;
@@ -53,17 +52,15 @@ function runCppLint(filename: string, workspaces: string[], enableworkspace: boo
             }
             workspaceparam = workspaceparam.concat(["--recursive", workspace]);
 
-            let output = lint(cpplint, workspaceparam)
-            out = out.concat(output)
+            let output = lint(cpplint, workspaceparam);
+            out = output;
         }
-        let end = 'CppLint ended: ' + new Date().toString();
-        out.push(end);
         return out.join('\n');
 
     } else {
         let workspace = ""
         if (workspaces != null) {
-            workspace = workspaces[0]
+            workspace = workspaces[0];
         }
 
         if (config['repository'].length != 0) {
@@ -75,9 +72,9 @@ function runCppLint(filename: string, workspaces: string[], enableworkspace: boo
         }
 
         param.push(filename);
-        let output = lint(cpplint, param)
+        let output = lint(cpplint, param);
         let end = 'CppLint ended: ' + new Date().toString();
-        let out = [start].concat(output).concat(end)
+        let out = output;
         return out.join('\n');
     }
 }

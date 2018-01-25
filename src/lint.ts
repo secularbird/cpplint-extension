@@ -9,6 +9,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { runOnFile } from './runner';
 import { runOnWorkspace } from './runner';
+import { ConfigManager } from './configuration';
 
 function getCorrectFileName(p: string): string {
     if (!fs.existsSync(p)) {
@@ -92,7 +93,10 @@ export function Lint(diagnosticCollection: vscode.DiagnosticCollection, enablewo
         if(workspacefolder != undefined) {
             workspaces = [workspacefolder.uri.fsPath]
         }
-        cpplintOutput = runOnFile(filename, workspaces);
+
+        if (ConfigManager.getInstance().isSupportLanguage(activedoc.languageId)) {
+            cpplintOutput = runOnFile(filename, workspaces);
+        }
     }
     analysisResult(diagnosticCollection, cpplintOutput)
 }
