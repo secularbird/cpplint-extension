@@ -11,7 +11,7 @@ import { ConfigManager } from './configuration';
 let disposables: Set<any>;
 let outputChannel: vscode.OutputChannel;
 let statusItem: vscode.StatusBarItem;
-let timer:NodeJS.Timer;
+let timer: NodeJS.Timer;
 
 let diagnosticCollection: vscode.DiagnosticCollection = vscode.languages.createDiagnosticCollection('cpplint');
 
@@ -38,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(whole);
 }
 
-function runAnalysis() : Promise<void> {
+function runAnalysis(): Promise<void> {
     var edit = vscode.window.activeTextEditor;
     if (!edit) {
         return Promise.reject("no edit opened");
@@ -47,7 +47,7 @@ function runAnalysis() : Promise<void> {
     let filename = activedoc.fileName;
     let workspacefolder = vscode.workspace.getWorkspaceFolder(activedoc.uri)
     let workspaces = null;
-    if(workspacefolder != undefined) {
+    if (workspacefolder != undefined) {
         workspaces = [workspacefolder.uri.fsPath]
     }
 
@@ -67,10 +67,9 @@ function runAnalysis() : Promise<void> {
     return Promise.resolve()
 }
 
-function runWholeAnalysis() : Promise<void> {
-
-    let workspaces:string[] = [];
-    for(let folder of vscode.workspace.workspaceFolders) {
+function runWholeAnalysis(): Promise<void> {
+    let workspaces: string[] = [];
+    for (let folder of vscode.workspace.workspaceFolders) {
         workspaces = workspaces.concat(folder.uri.fsPath)
     }
 
@@ -99,7 +98,7 @@ export function deactivate() {
 function doLint() {
     if (vscode.window.activeTextEditor) {
         let language = vscode.window.activeTextEditor.document.languageId
-        if(ConfigManager.getInstance().isSupportLanguage(language)) {
+        if (ConfigManager.getInstance().isSupportLanguage(language)) {
             if (ConfigManager.getInstance().isSingleMode()) {
                 Lint(diagnosticCollection, true);
             } else {
@@ -111,7 +110,7 @@ function doLint() {
 }
 
 function startLint() {
-    timer = global.setTimeout(doLint, 1.5*1000);
+    timer = global.setTimeout(doLint, 1.5 * 1000);
 }
 
 function loadConfigure() {
