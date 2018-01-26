@@ -57,7 +57,7 @@ function runAnalysis(): Promise<void> {
     let start = 'CppLint started: ' + new Date().toString();
     outputChannel.appendLine(start);
 
-    let result = an.runOnFile(filename, workspaces);
+    let result = an.runOnFile();
     outputChannel.appendLine(result);
 
     let end = 'CppLint ended: ' + new Date().toString();
@@ -79,7 +79,7 @@ function runWholeAnalysis(): Promise<void> {
     let start = 'CppLint started: ' + new Date().toString();
     outputChannel.appendLine(start);
 
-    let result = an.runOnWorkspace(workspaces);
+    let result = an.runOnWorkspace();
     outputChannel.appendLine(result);
 
     let end = 'CppLint ended: ' + new Date().toString();
@@ -100,9 +100,9 @@ function doLint() {
         let language = vscode.window.activeTextEditor.document.languageId
         if (ConfigManager.getInstance().isSupportLanguage(language)) {
             if (ConfigManager.getInstance().isSingleMode()) {
-                Lint(diagnosticCollection, true);
-            } else {
                 Lint(diagnosticCollection, false);
+            } else {
+                Lint(diagnosticCollection, true);
             }
         }
     }
@@ -117,7 +117,7 @@ function loadConfigure() {
     ConfigManager.getInstance().initialize();
     if (ConfigManager.getInstance().isSingleMode()) {
         doLint();
-        vscode.workspace.onDidOpenTextDocument((() => doLint()).bind(this));
+        vscode.window.onDidChangeActiveTextEditor((() => doLint()).bind(this));
         vscode.workspace.onDidSaveTextDocument((() => doLint()).bind(this));
     } else {
         // start timer to do workspace lint

@@ -80,23 +80,9 @@ export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection
 export function Lint(diagnosticCollection: vscode.DiagnosticCollection, enableworkspace: boolean) {
     let cpplintOutput;
     if (enableworkspace) {
-        let workspaces: string[] = [];
-        for (let folder of vscode.workspace.workspaceFolders) {
-            workspaces = workspaces.concat(folder.uri.fsPath)
-        }
-        cpplintOutput = runOnWorkspace(workspaces);
+        cpplintOutput = runOnWorkspace();
     } else {
-        let activedoc = vscode.window.activeTextEditor.document;
-        let filename = activedoc.fileName;
-        let workspacefolder = vscode.workspace.getWorkspaceFolder(activedoc.uri)
-        let workspaces = null;
-        if (workspacefolder != undefined) {
-            workspaces = [workspacefolder.uri.fsPath]
-        }
-
-        if (ConfigManager.getInstance().isSupportLanguage(activedoc.languageId)) {
-            cpplintOutput = runOnFile(filename, workspaces);
-        }
+        cpplintOutput = runOnFile();
     }
     analysisResult(diagnosticCollection, cpplintOutput)
 }

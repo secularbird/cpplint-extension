@@ -2,17 +2,33 @@ import { spawnSync } from "child_process";
 import * as vscode from 'vscode';
 import { ConfigManager } from "./configuration";
 
-export function runOnFile(filename: string, workspaces: string[]) {
-    let result = runCppLint(filename, workspaces, false);
-    return result;
+export function runOnFile() {
+    let activedoc = vscode.window.activeTextEditor.document;
+    let filename = activedoc.fileName;
+    let workspacefolder = vscode.workspace.getWorkspaceFolder(activedoc.uri)
+    let workspaces = null;
+    if (workspacefolder != undefined) {
+        workspaces = [workspacefolder.uri.fsPath]
+    }
+
+    if (ConfigManager.getInstance().isSupportLanguage(activedoc.languageId)) {
+        let result = runCppLint(filename, workspaces, false);
+        return result;
+    } else {
+        return "";
+    }
 }
 
-export function runOnWorkspace(workspaces: string[]) {
+export function runOnWorkspace() {
+    let workspaces: string[] = [];
+    for (let folder of vscode.workspace.workspaceFolders) {
+        workspaces = workspaces.concat(folder.uri.fsPath)
+    }
     let result = runCppLint(null, workspaces, true);
     return result;
 }
 
-function runCppLint(filename: string, workspaces: string[], enableworkspace: boolean) {
+export function runCppLint(filename: string, workspaces: string[], enableworkspace: boolean) {
     let config = ConfigManager.getInstance().getConfig();
     let cpplint = config["cpplintPath"];
     let linelength = "--linelength=" + config['lineLength'];
