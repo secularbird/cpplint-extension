@@ -3,6 +3,9 @@ import * as vscode from 'vscode';
 import { ConfigManager } from "./configuration";
 
 export function runOnFile() {
+    if (vscode.window.activeTextEditor == undefined) {
+        return  ""
+    }
     let activedoc = vscode.window.activeTextEditor.document;
     let filename = activedoc.fileName;
     let workspacefolder = vscode.workspace.getWorkspaceFolder(activedoc.uri)

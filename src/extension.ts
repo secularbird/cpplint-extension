@@ -8,7 +8,6 @@ import { analysisResult } from './lint'
 import * as configuration from './configuration'
 import { ConfigManager } from './configuration';
 
-let disposables: Set<any>;
 let outputChannel: vscode.OutputChannel;
 let statusItem: vscode.StatusBarItem;
 let timer: NodeJS.Timer;
@@ -43,13 +42,6 @@ function runAnalysis(): Promise<void> {
     if (!edit) {
         return Promise.reject("no edit opened");
     }
-    let activedoc = vscode.window.activeTextEditor.document;
-    let filename = activedoc.fileName;
-    let workspacefolder = vscode.workspace.getWorkspaceFolder(activedoc.uri)
-    let workspaces = null;
-    if (workspacefolder != undefined) {
-        workspaces = [workspacefolder.uri.fsPath]
-    }
 
     outputChannel.show();
     outputChannel.clear();
@@ -68,10 +60,6 @@ function runAnalysis(): Promise<void> {
 }
 
 function runWholeAnalysis(): Promise<void> {
-    let workspaces: string[] = [];
-    for (let folder of vscode.workspace.workspaceFolders) {
-        workspaces = workspaces.concat(folder.uri.fsPath)
-    }
 
     outputChannel.show();
     outputChannel.clear();
