@@ -9,7 +9,7 @@
         "url": "https://github.com/secularbird/cpplint-extension"
     },
     "engines": {
-        "vscode": "^1.15.0"
+        "vscode": "^1.19.0"
     },
     "categories": [
         "Linters"
