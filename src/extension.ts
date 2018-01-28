@@ -61,7 +61,6 @@ function runAnalysis(): Promise<void> {
 }
 
 function runWholeAnalysis(): Promise<void> {
-
     outputChannel.show();
     outputChannel.clear();
 
