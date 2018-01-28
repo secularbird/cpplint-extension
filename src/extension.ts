@@ -40,7 +40,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 function runAnalysis(): Promise<void> {
     var edit = vscode.window.activeTextEditor;
-    if (edit != undefined) {
+    if (edit == undefined) {
         return Promise.reject("no edit opened");
     }
 
