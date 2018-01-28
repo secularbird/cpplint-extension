@@ -9,7 +9,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { runOnFile } from './runner';
 import { runOnWorkspace } from './runner';
-
+import { ConfigManager } from './configuration';
 
 function getCorrectFileName(p: string): string {
     if (!fs.existsSync(p)) {
@@ -32,17 +32,17 @@ function cpplintSeverityToDiagnosticSeverity(severity: string): vscode.Diagnosti
     }
 }
 
-export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection, result:string) {
+export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection, result: string) {
     diagnosticCollection.clear();
 
     // 1 = path, 2 = line, 3 = severity, 4 = message
     let regex = /^(.*)\(([0-9]+)\):\s*(\w+):(.*\s+\[.*\])\s+\[([0-9]+)\]/gm;
     let regexArray: RegExpExecArray;
-    let fileData: {[key:string]:RegExpExecArray[]} = {};
+    let fileData: { [key: string]: RegExpExecArray[] } = {};
     while (regexArray = regex.exec(result)) {
         if (regexArray[1] === undefined || regexArray[2] === undefined
             || regexArray[3] === undefined || regexArray[4] === undefined
-            || regexArray[5] === undefined ) {
+            || regexArray[5] === undefined) {
             continue;
         }
 
@@ -77,23 +77,12 @@ export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection
     }
 }
 
-export function Lint(diagnosticCollection: vscode.DiagnosticCollection, config: {[key:string]:any}, enableworkspace:boolean) {
+export function Lint(diagnosticCollection: vscode.DiagnosticCollection, enableworkspace: boolean) {
     let cpplintOutput;
     if (enableworkspace) {
-        let workspaces:string[] = [];
-        for(let folder of vscode.workspace.workspaceFolders) {
-            workspaces = workspaces.concat(folder.uri.fsPath)
-        }
-        cpplintOutput = runOnWorkspace(workspaces, config);
+        cpplintOutput = runOnWorkspace();
     } else {
-        let activedoc = vscode.window.activeTextEditor.document;
-        let filename = activedoc.fileName;
-        let workspacefolder = vscode.workspace.getWorkspaceFolder(activedoc.uri)
-        let workspaces = null;
-        if(workspacefolder != undefined) {
-            workspaces = [workspacefolder.uri.fsPath]
-        }
-        cpplintOutput = runOnFile(filename, workspaces, config);
+        cpplintOutput = runOnFile();
     }
     analysisResult(diagnosticCollection, cpplintOutput)
 }

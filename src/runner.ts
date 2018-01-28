@@ -1,18 +1,38 @@
 import { spawnSync } from "child_process";
 import * as vscode from 'vscode';
+import { ConfigManager } from "./configuration";
 
-export function runOnFile(filename: string, workspaces: string[], config: { [key: string]: any }) {
-    let result = runCppLint(filename, workspaces, config, false);
+export function runOnFile() {
+    if (vscode.window.activeTextEditor == undefined) {
+        return  ""
+    }
+    let activedoc = vscode.window.activeTextEditor.document;
+    let filename = activedoc.fileName;
+    let workspacefolder = vscode.workspace.getWorkspaceFolder(activedoc.uri)
+    let workspaces = null;
+    if (workspacefolder != undefined) {
+        workspaces = [workspacefolder.uri.fsPath]
+    }
+
+    if (ConfigManager.getInstance().isSupportLanguage(activedoc.languageId)) {
+        let result = runCppLint(filename, workspaces, false);
+        return result;
+    } else {
+        return "";
+    }
+}
+
+export function runOnWorkspace() {
+    let workspaces: string[] = [];
+    for (let folder of vscode.workspace.workspaceFolders) {
+        workspaces = workspaces.concat(folder.uri.fsPath)
+    }
+    let result = runCppLint(null, workspaces, true);
     return result;
 }
 
-export function runOnWorkspace(workspaces: string[], config: { [key: string]: any }) {
-    let result = runCppLint(null, workspaces, config, true);
-    return result;
-}
-
-function runCppLint(filename: string, workspaces: string[], config: { [key: string]: any }, enableworkspace: boolean) {
-    let start = 'CppLint started: ' + new Date().toString();
+export function runCppLint(filename: string, workspaces: string[], enableworkspace: boolean) {
+    let config = ConfigManager.getInstance().getConfig();
     let cpplint = config["cpplintPath"];
     let linelength = "--linelength=" + config['lineLength'];
     let param: string[] = ['--output=vs7', linelength];
@@ -24,26 +44,21 @@ function runCppLint(filename: string, workspaces: string[], config: { [key: stri
     }
 
     if (config['filters'].length != 0) {
-        let filter: string = "";
-        config['filters'].forEach(element => {
-            if (filter == "") {
-                filter = element;
-            } else {
-                filter = filter + "," + element
-            }
-        });
-        filter = "--filter=" + filter;
-        param.push(filter);
+        param.push("--filter=" + config["filters"].join(','))
     }
 
-    param.push("--extensions=" + config["extensions"].join(','))
+    if (config["extensions"].length != 0) {
+        param.push("--extensions=" + config["extensions"].join(','))
+    }
 
-    param.push("--headers=" + config["headers"].join(','))
+    if (config["headers"].length != 0) {
+        param.push("--headers=" + config["headers"].join(','))
+    }
 
     param.push("--verbose=" + config['verbose']);
 
     if (enableworkspace) {
-        let out = [start];
+        let out = [];
         for (let workspace of workspaces) {
             out.push("Scan workspace: " + workspace);
             let workspaceparam = param;
@@ -56,17 +71,15 @@ function runCppLint(filename: string, workspaces: string[], config: { [key: stri
             }
             workspaceparam = workspaceparam.concat(["--recursive", workspace]);
 
-            let output = lint(cpplint, workspaceparam)
-            out = out.concat(output)
+            let output = lint(cpplint, workspaceparam);
+            out = output;
         }
-        let end = 'CppLint ended: ' + new Date().toString();
-        out.push(end);
         return out.join('\n');
 
     } else {
         let workspace = ""
         if (workspaces != null) {
-            workspace = workspaces[0]
+            workspace = workspaces[0];
         }
 
         if (config['repository'].length != 0) {
@@ -78,9 +91,9 @@ function runCppLint(filename: string, workspaces: string[], config: { [key: stri
         }
 
         param.push(filename);
-        let output = lint(cpplint, param)
+        let output = lint(cpplint, param);
         let end = 'CppLint ended: ' + new Date().toString();
-        let out = [start].concat(output).concat(end)
+        let out = output;
         return out.join('\n');
     }
 }
