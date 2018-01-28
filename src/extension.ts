@@ -32,14 +32,15 @@ export function activate(context: vscode.ExtensionContext) {
     let single = vscode.commands.registerCommand('cpplint.runAnalysis', runAnalysis);
     context.subscriptions.push(single);
 
-    // workspace mode does not regist event
     let whole = vscode.commands.registerCommand('cpplint.runWholeAnalysis', runWholeAnalysis);
     context.subscriptions.push(whole);
+
+    vscode.workspace.onDidChangeConfiguration((()=>loadConfigure()).bind(this));
 }
 
 function runAnalysis(): Promise<void> {
     var edit = vscode.window.activeTextEditor;
-    if (!edit) {
+    if (edit != undefined) {
         return Promise.reject("no edit opened");
     }
 
