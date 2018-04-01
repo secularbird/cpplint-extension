@@ -39,7 +39,13 @@ export function runCppLint(filename: string, workspaces: string[], enableworkspa
 
     if (config['excludes'].length != 0) {
         config['excludes'].forEach(element => {
-            param.push("--exclude=" + element)
+            if (element[0] == "/") {
+                param.push("--exclude=" + element);
+            } else {
+                workspaces.forEach(workspace => {
+                    param.push("--exclude=" + workspace + "/" + element)
+                });
+            }
         });
     }
 

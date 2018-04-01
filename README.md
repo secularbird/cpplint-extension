@@ -69,7 +69,7 @@ dir c:\ProgramData\Anaconda2\Scripts\cpplint.exe
 * `cpplint.cpplintPath`: set cpplint executable path, path on windows should like `c:\\ProgramData\\Anaconda2\\Scripts\\cpplint.exe`
 * `cpplint.lintMode`: set cpplint mode, avialable value are single and workspace
 * `cpplint.lineLength`: set line length strict, default is 80 characters
-* `cpplint.excludes`: set exclude rules, which is related path and shell globbing is preforming
+* `cpplint.excludes`: set exclude rules, which is related path and shell globbing is preforming, abosluted path is supported right now
 * `cpplint.filters`: set filters, only error messages whose category names pass the filters will be printed
 * `cpplint.root`: set the root directory used for deriving header guard CPP variables
 * `cpplint.repository`: set top level directory of the repository, used to derive the header guard CPP variable

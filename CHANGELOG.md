@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.1.0]
 ### Change
 
+- update vscode baseline to 1.21
+- when exclude is a relative path, multiroot will scaned
+
+## [0.1.0]
+### Change
+
 - configure to ConfigManager singletone
 - lint when file open
 

@@ -2,14 +2,14 @@
     "name": "cpplint",
     "displayName": "cpplint",
     "description": "code style check tool extension for cpplint",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "publisher": "mine",
     "repository": {
         "type": "Git",
         "url": "https://github.com/secularbird/cpplint-extension"
     },
     "engines": {
-        "vscode": "^1.19.0"
+        "vscode": "^1.21.0"
     },
     "categories": [
         "Linters"
