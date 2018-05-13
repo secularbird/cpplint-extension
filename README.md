@@ -16,7 +16,7 @@ This extension utilizes the cpplint checker to provide C and C++ code style chec
 
 #### Install from source
 
-https://github.com/google/styleguide/tree/gh-pages/cpplint
+https://github.com/cpplint/cpplint
 
 #### Mac & Linux
 
