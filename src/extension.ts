@@ -101,12 +101,16 @@ function startLint() {
     timer = global.setTimeout(doLint, 1.5 * 1000);
 }
 
+function startLint2() {
+    timer = global.setTimeout(doLint, 500);
+}
+
 function loadConfigure() {
     ConfigManager.getInstance().initialize();
     if (ConfigManager.getInstance().isSingleMode()) {
-        doLint();
-        vscode.window.onDidChangeActiveTextEditor((() => doLint()).bind(this));
-        vscode.workspace.onDidSaveTextDocument((() => doLint()).bind(this));
+        startLint2();
+        vscode.window.onDidChangeActiveTextEditor((() => startLint2()).bind(this));
+        vscode.workspace.onDidSaveTextDocument((() => startLint2()).bind(this));
     } else {
         // start timer to do workspace lint
         startLint();

@@ -3,6 +3,11 @@ All notable changes to the "cpplint" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.1.2]
+### Change
+
+- fix cpplint in 500ms when setting and save happened to avoid large file freeze
+
 ## [0.1.0]
 ### Change
 
