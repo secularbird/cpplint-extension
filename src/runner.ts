@@ -1,6 +1,8 @@
-import { spawnSync } from "child_process";
+import { exec } from "child_process";
 import * as vscode from 'vscode';
 import { ConfigManager } from "./configuration";
+import { analysisResult } from './lint';
+
 
 export function runOnFile() {
     if (vscode.window.activeTextEditor == undefined) {
@@ -15,10 +17,7 @@ export function runOnFile() {
     }
 
     if (ConfigManager.getInstance().isSupportLanguage(activedoc.languageId)) {
-        let result = runCppLint(filename, workspaces, false);
-        return result;
-    } else {
-        return "";
+        runCppLint(filename, workspaces, false)
     }
 }
 
@@ -27,8 +26,7 @@ export function runOnWorkspace() {
     for (let folder of vscode.workspace.workspaceFolders) {
         workspaces = workspaces.concat(folder.uri.fsPath)
     }
-    let result = runCppLint(null, workspaces, true);
-    return result;
+    runCppLint(null, workspaces, true)
 }
 
 export function runCppLint(filename: string, workspaces: string[], enableworkspace: boolean) {
@@ -64,9 +62,7 @@ export function runCppLint(filename: string, workspaces: string[], enableworkspa
     param.push("--verbose=" + config['verbose']);
 
     if (enableworkspace) {
-        let out = [];
         for (let workspace of workspaces) {
-            out.push("Scan workspace: " + workspace);
             let workspaceparam = param;
             if (config['repository'].length != 0) {
                 workspaceparam.push("--repository=" + config["repository"].replace("${workspaceFloder}", workspace));
@@ -77,11 +73,8 @@ export function runCppLint(filename: string, workspaces: string[], enableworkspa
             }
             workspaceparam = workspaceparam.concat(["--recursive", workspace]);
 
-            let output = lint(cpplint, workspaceparam);
-            out = output;
+            lint(cpplint, workspaceparam);
         }
-        return out.join('\n');
-
     } else {
         let workspace = ""
         if (workspaces != null) {
@@ -97,17 +90,22 @@ export function runCppLint(filename: string, workspaces: string[], enableworkspa
         }
 
         param.push(filename);
-        let output = lint(cpplint, param);
-        let end = 'CppLint ended: ' + new Date().toString();
-        let out = output;
-        return out.join('\n');
+        lint(cpplint, param);
     }
 }
 
-function lint(exec: string, params: string[]) {
-    let result = spawnSync(exec, params)
-    let stdout = result.stdout;
-    let stderr = result.stderr;
-    let out = [result.stdout, result.stderr]
-    return out;
+let lintstats = null
+
+function lint(executable: string, params: string[]) {
+    let param_string = params.join(" ")
+
+    if(lintstats != null){
+        lintstats.kill()
+    }
+
+    lintstats = exec(executable + ' ' + param_string, (error, stdout, stderr) => {
+        let cpplintOutput = [stdout, stderr].join('\n')
+        analysisResult(cpplintOutput)
+    })
+
 }

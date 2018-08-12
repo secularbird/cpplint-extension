@@ -9,7 +9,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { runOnFile } from './runner';
 import { runOnWorkspace } from './runner';
-import { ConfigManager } from './configuration';
+
+
+let diagnosticCollection: vscode.DiagnosticCollection = vscode.languages.createDiagnosticCollection('cpplint');
 
 function getCorrectFileName(p: string): string {
     if (!fs.existsSync(p)) {
@@ -32,7 +34,7 @@ function cpplintSeverityToDiagnosticSeverity(severity: string): vscode.Diagnosti
     }
 }
 
-export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection, result: string) {
+export function analysisResult(result: string) {
     diagnosticCollection.clear();
 
     // 1 = path, 2 = line, 3 = severity, 4 = message
@@ -77,12 +79,10 @@ export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection
     }
 }
 
-export function Lint(diagnosticCollection: vscode.DiagnosticCollection, enableworkspace: boolean) {
-    let cpplintOutput;
+export function Lint(enableworkspace: boolean) {
     if (enableworkspace) {
-        cpplintOutput = runOnWorkspace();
+        runOnWorkspace();
     } else {
-        cpplintOutput = runOnFile();
+        runOnFile();
     }
-    analysisResult(diagnosticCollection, cpplintOutput)
 }

@@ -2,7 +2,6 @@
 
 import * as vscode from 'vscode';
 import { platform } from 'os';
-import { join } from 'path';
 import { each, isNull } from 'lodash';
 import { existsSync } from 'fs';
 
