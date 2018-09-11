@@ -69,7 +69,7 @@ export function runCppLint(filename: string, workspaces: string[], enableworkspa
             out.push("Scan workspace: " + workspace);
             let workspaceparam = param;
             if (config['repository'].length != 0) {
-                workspaceparam.push("--repository=" + config["repository"].replace("${workspaceFloder}", workspace));
+                workspaceparam.push("--repository=" + config["repository"].replace("${workspaceFolder}", workspace));
             }
 
             if (config['root'].length != 0) {
