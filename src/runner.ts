@@ -1,6 +1,7 @@
 import { spawnSync } from "child_process";
 import * as vscode from 'vscode';
 import { ConfigManager } from "./configuration";
+import * as path from 'path';
 
 export function runOnFile() {
     if (vscode.window.activeTextEditor == undefined) {
@@ -69,11 +70,17 @@ export function runCppLint(filename: string, workspaces: string[], enableworkspa
             out.push("Scan workspace: " + workspace);
             let workspaceparam = param;
             if (config['repository'].length != 0) {
-                workspaceparam.push("--repository=" + config["repository"].replace("${workspaceFolder}", workspace));
+                let repo: string = "--repository=" + config["repository"].replace("${workspaceFolder}", workspace);
+                repo = repo.replace("${workspaceFolderBasename}", path.basename(workspace));
+
+                workspaceparam.push(repo);
             }
 
             if (config['root'].length != 0) {
-                workspaceparam.push("--root=" + config["root"].replace("${workspaceFolder}", workspace));
+                let root: string = "--root=" + config["root"].replace("${workspaceFolder}", workspace);
+                root = root.replace("${workspaceFolderBasename}", path.basename(workspace));
+
+                workspaceparam.push(root);
             }
             workspaceparam = workspaceparam.concat(["--recursive", workspace]);
 
@@ -89,11 +96,17 @@ export function runCppLint(filename: string, workspaces: string[], enableworkspa
         }
 
         if (config['repository'].length != 0) {
-            param.push("--repository=" + config["repository"].replace("${workspaceFolder}", workspace));
+            let repo: string = "--repository=" + config["repository"].replace("${workspaceFolder}", workspace);
+            repo = repo.replace("${workspaceFolderBasename}", path.basename(workspace));
+
+            param.push(repo);
         }
 
         if (config['root'].length != 0) {
-            param.push("--root=" + config["root"].replace("${workspaceFolder}", workspace));
+            let root: string = "--root=" + config["root"].replace("${workspaceFolder}", workspace);
+            root = root.replace("${workspaceFolderBasename}", path.basename(workspace));
+
+            param.push(root);
         }
 
         param.push(filename);
