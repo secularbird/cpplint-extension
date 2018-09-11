@@ -36,7 +36,7 @@ export function runCppLint(filename: string, workspaces: string[], enableworkspa
     let config = ConfigManager.getInstance().getConfig();
     let cpplint = config["cpplintPath"];
     let linelength = "--linelength=" + config['lineLength'];
-    let param: string[] = ['--output=vs7', linelength];
+    let param: string[] = ['--output=eclipse', linelength];
 
     if (config['excludes'].length != 0) {
         config['excludes'].forEach(element => {
