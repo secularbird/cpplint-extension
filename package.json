@@ -2,7 +2,7 @@
     "name": "cpplint",
     "displayName": "cpplint",
     "description": "code style check tool extension for cpplint",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "publisher": "mine",
     "repository": {
         "type": "Git",
