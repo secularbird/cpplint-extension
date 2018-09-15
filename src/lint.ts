@@ -36,7 +36,7 @@ export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection
     diagnosticCollection.clear();
 
     // 1 = path, 2 = line, 3 = severity, 4 = message
-    let regex = /^(.*)\(([0-9]+)\):\s*(\w+):(.*\s+\[.*\])\s+\[([0-9]+)\]/gm;
+    let regex = /^(.*):([0-9]+):\s*(\w+):(.*\s+\[.*\])\s+\[([0-9]+)\]/gm;
     let regexArray: RegExpExecArray;
     let fileData: { [key: string]: RegExpExecArray[] } = {};
     while (regexArray = regex.exec(result)) {
@@ -68,7 +68,7 @@ export function analysisResult(diagnosticCollection: vscode.DiagnosticCollection
 
                 let l = doc.lineAt(line);
                 let r = new vscode.Range(line, 0, line, l.text.length);
-                let d = new vscode.Diagnostic(r, `(${severity}) ${message}`, cpplintSeverityToDiagnosticSeverity(severity));
+                let d = new vscode.Diagnostic(r, `${message}`, cpplintSeverityToDiagnosticSeverity(severity));
                 d.source = 'cpplint';
                 diagnostics.push(d);
             }
