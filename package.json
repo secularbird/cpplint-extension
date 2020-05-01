@@ -1,150 +1,154 @@
 {
-    "name": "cpplint",
-    "displayName": "cpplint",
-    "description": "code style check tool extension for cpplint",
-    "version": "0.1.3",
-    "publisher": "mine",
-    "repository": {
-        "type": "Git",
-        "url": "https://github.com/secularbird/cpplint-extension"
-    },
-    "engines": {
-        "vscode": "^1.21.0"
-    },
-    "categories": [
-        "Linters"
+  "name": "cpplint",
+  "displayName": "cpplint",
+  "description": "code style check tool extension for cpplint",
+  "version": "0.1.3",
+  "publisher": "mine",
+  "repository": {
+    "type": "Git",
+    "url": "https://github.com/secularbird/cpplint-extension"
+  },
+  "engines": {
+    "vscode": "^1.21.0"
+  },
+  "categories": [
+    "Linters"
+  ],
+  "keywords": [
+    "multi-root ready"
+  ],
+  "activationEvents": [
+    "onLanguage:cpp",
+    "onLanguage:c",
+    "onCommand:cpplint.runAnalysis",
+    "onCommand:cpplint.runWholeAnalysis"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cpplint.runAnalysis",
+        "title": "Analyze current file",
+        "category": "cpplinter"
+      },
+      {
+        "command": "cpplint.runWholeAnalysis",
+        "title": "Analyze current workspace",
+        "category": "cpplinter"
+      }
     ],
-    "keywords": [
-        "multi-root ready"
-    ],
-    "activationEvents": [
-        "onLanguage:cpp",
-        "onLanguage:c",
-        "onCommand:cpplint.runAnalysis",
-        "onCommand:cpplint.runWholeAnalysis"
-    ],
-    "main": "./out/src/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "cpplint.runAnalysis",
-                "title": "Analyze current file",
-                "category": "cpplinter"
-            },
-            {
-                "command": "cpplint.runWholeAnalysis",
-                "title": "Analyze current workspace",
-                "category": "cpplinter"
-            }
-        ],
-        "configuration": {
-            "type": "object",
-            "title": "cpplint",
-            "properties": {
-                "cpplint.cpplintPath": {
-                    "type": "string",
-                    "default": "/usr/local/bin/cpplint",
-                    "description": "The path to the cpplint executable. If not set, the default location will be used."
-                },
-                "cpplint.lintMode": {
-                    "type": "string",
-                    "default": "single",
-                    "enum": [
-                        "single",
-                        "workspace"
-                    ],
-                    "description": "single is fast, only provides information of current active file, workspace is slow, provides informations of the whole workspace"
-                },
-                "cpplint.lineLength": {
-                    "type": "number",
-                    "default": 80,
-                    "description": "This is the allowed line length for the project."
-                },
-                "cpplint.excludes": {
-                    "type": "array",
-                    "default": [],
-                    "description": "Exclude the given path from the list of files to be linted.Relative paths are evaluated relative to the current directory and shell globbing is performed"
-                },
-                "cpplint.filters": {
-                    "type": "array",
-                    "default": [],
-                    "description": "Specify a comma-separated list of category-filters to apply: only error messages whose category names pass the filters will be printed."
-                },
-                "cpplint.verbose": {
-                    "type": "number",
-                    "default": 0,
-                    "enum": [
-                        0,
-                        1,
-                        2,
-                        4,
-                        5
-                    ],
-                    "description": "Specify a number 0-5 to restrict errors to certain verbosity levels. Errors with lower verbosity levels have lower confidence and are more likely to be false positives."
-                },
-                "cpplint.repository": {
-                    "type": "string",
-                    "default": "${workspaceFolder}",
-                    "description": "The top level directory of the repository, used to derive the header guard CPP variable. By default, this is determined by searching for a path that contains .git, .hg, or .svn. When this flag is specified, the given path is used instead. This option allows the header guard CPP variable to remain consistent even if members of a team have different repository root directories (such as when checking out a subdirectory with SVN). In addition, users of non-mainstream version control systems can use this flag to ensure readable header guard CPP variables."
-                },
-                "cpplint.root": {
-                    "type": "string",
-                    "default": "${workspaceFolder}/include",
-                    "description": "The root directory used for deriving header guard CPP variables. This directory is relative to the top level directory of the repository which by default is determined by searching for a directory that contains .git, .hg, or .svn but can also be controlled with the --repository flag. If the specified directory does not exist, this flag is ignored."
-                },
-                "cpplint.extensions": {
-                    "type": "array",
-                    "default": [
-                        "cpp",
-                        "h++",
-                        "cuh",
-                        "c",
-                        "c++",
-                        "cu",
-                        "hxx",
-                        "hpp",
-                        "cc",
-                        "cxx",
-                        "h"
-                    ],
-                    "description": "The allowed file extensions that cpplint will check."
-                },
-                "cpplint.languages": {
-                    "type": "array",
-                    "default": [
-                        "cpp",
-                        "c"
-                    ],
-                    "description": "The allowed vscode language identifiers that cpplint will check."
-                },
-                "cpplint.headers": {
-                    "type": "array",
-                    "default": [
-                        "h++",
-                        "cuh",
-                        "hxx",
-                        "hpp",
-                        "h"
-                    ],
-                    "description": "The allowed header extensions that cpplint will consider to be header files."
-                }
-            }
+    "configuration": {
+      "type": "object",
+      "title": "cpplint",
+      "properties": {
+        "cpplint.cpplintPath": {
+          "type": "string",
+          "default": "/usr/local/bin/cpplint",
+          "description": "The path to the cpplint executable. If not set, the default location will be used."
+        },
+        "cpplint.lintMode": {
+          "type": "string",
+          "default": "single",
+          "enum": [
+            "single",
+            "workspace"
+          ],
+          "description": "single is fast, only provides information of current active file, workspace is slow, provides informations of the whole workspace"
+        },
+        "cpplint.lineLength": {
+          "type": "number",
+          "default": 80,
+          "description": "This is the allowed line length for the project."
+        },
+        "cpplint.excludes": {
+          "type": "array",
+          "default": [],
+          "description": "Exclude the given path from the list of files to be linted.Relative paths are evaluated relative to the current directory and shell globbing is performed"
+        },
+        "cpplint.filters": {
+          "type": "array",
+          "default": [],
+          "description": "Specify a comma-separated list of category-filters to apply: only error messages whose category names pass the filters will be printed."
+        },
+        "cpplint.verbose": {
+          "type": "number",
+          "default": 0,
+          "enum": [
+            0,
+            1,
+            2,
+            4,
+            5
+          ],
+          "description": "Specify a number 0-5 to restrict errors to certain verbosity levels. Errors with lower verbosity levels have lower confidence and are more likely to be false positives."
+        },
+        "cpplint.repository": {
+          "type": "string",
+          "default": "${workspaceFolder}",
+          "description": "The top level directory of the repository, used to derive the header guard CPP variable. By default, this is determined by searching for a path that contains .git, .hg, or .svn. When this flag is specified, the given path is used instead. This option allows the header guard CPP variable to remain consistent even if members of a team have different repository root directories (such as when checking out a subdirectory with SVN). In addition, users of non-mainstream version control systems can use this flag to ensure readable header guard CPP variables."
+        },
+        "cpplint.root": {
+          "type": "string",
+          "default": "${workspaceFolder}/include",
+          "description": "The root directory used for deriving header guard CPP variables. This directory is relative to the top level directory of the repository which by default is determined by searching for a directory that contains .git, .hg, or .svn but can also be controlled with the --repository flag. If the specified directory does not exist, this flag is ignored."
+        },
+        "cpplint.extensions": {
+          "type": "array",
+          "default": [
+            "cpp",
+            "h++",
+            "cuh",
+            "c",
+            "c++",
+            "cu",
+            "hxx",
+            "hpp",
+            "cc",
+            "cxx",
+            "h"
+          ],
+          "description": "The allowed file extensions that cpplint will check."
+        },
+        "cpplint.languages": {
+          "type": "array",
+          "default": [
+            "cpp",
+            "c"
+          ],
+          "description": "The allowed vscode language identifiers that cpplint will check."
+        },
+        "cpplint.headers": {
+          "type": "array",
+          "default": [
+            "h++",
+            "cuh",
+            "hxx",
+            "hpp",
+            "h"
+          ],
+          "description": "The allowed header extensions that cpplint will consider to be header files."
         }
-    },
-    "scripts": {
-        "vscode:prepublish": "tsc -p ./",
-        "compile": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "typescript": "^2.0.3",
-        "vscode": "^1.0.0",
-        "mocha": "^2.3.3",
-        "@types/node": "^6.0.40",
-        "@types/mocha": "^2.2.32"
-    },
-    "dependencies": {
-        "lodash": "^4.17.4"
+      }
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "devDependencies": {
+    "typescript": "^2.0.3",
+    "vscode": "^1.0.0",
+    "mocha": "^2.3.3",
+    "@types/node": "^6.0.40",
+    "@types/mocha": "^2.2.32"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "snyk": "^1.316.1"
+  },
+  "snyk": true
 }
